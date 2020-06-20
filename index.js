@@ -28,7 +28,7 @@ client.on('message', msg => {
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-	let ch = client.channels.get(config.channels.log);
+	let ch = client.channels.fetch(config.channels.log);
 	ch.setTopic("Last restart: " + client.readyAt + " - Version: v" + config.ver);
 	client.user.setActivity(config.activity.content, {
 		type: config.activity.type
@@ -180,7 +180,7 @@ client.on('message', msg => {
 			} else if (msg.member.roles.has(config.roles.commander)) {
 				msg.channel.bulkDelete(msg.content.substr(7));
 				msg.channel.send("Foof! " + msg.content.substr(7) + " messages are now no more.");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0x31d400,
@@ -199,7 +199,7 @@ client.on('message', msg => {
 				});
 			} else {
 				msg.channel.send("No. \n*" + msg.author.username + " doesn't have permission to clear messages.*");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -230,7 +230,7 @@ client.on('message', msg => {
 					client.user.setActivity(mood, {
 						type: actionParsed
 					});
-					let ch = client.channels.get(config.channels.log);
+					let ch = client.channels.fetch(config.channels.log);
 					ch.send({
 						embed: {
 							color: 0x31d400,
@@ -253,7 +253,7 @@ client.on('message', msg => {
 					client.user.setActivity(mood, {
 						type: actionParsed
 					});
-					let ch = client.channels.get(config.channels.log);
+					let ch = client.channels.fetch(config.channels.log);
 					ch.send({
 						embed: {
 							color: 0x31d400,
@@ -276,7 +276,7 @@ client.on('message', msg => {
 					client.user.setActivity(mood, {
 						type: actionParsed
 					});
-					let ch = client.channels.get(config.channels.log);
+					let ch = client.channels.fetch(config.channels.log);
 					ch.send({
 						embed: {
 							color: 0x31d400,
@@ -299,7 +299,7 @@ client.on('message', msg => {
 					client.user.setActivity(mood, {
 						type: actionParsed
 					});
-					let ch = client.channels.get(config.channels.log);
+					let ch = client.channels.fetch(config.channels.log);
 					ch.send({
 						embed: {
 							color: 0x31d400,
@@ -321,7 +321,7 @@ client.on('message', msg => {
 				}
 			} else {
 				msg.channel.send("I would do it, but " + msg.author.username + " isn't special enough.\n*User unauthorised*");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -353,7 +353,7 @@ client.on('message', msg => {
 						member.kick('Kicked by Smartbot, becuse I was told to kick them.').then(() => {
 							// We let the message author know we were able to kick the person
 							msg.channel.send("Yeetus deletus, that " + msg.mentions.users.first() + " is gone.");
-							let ch = client.channels.get(config.channels.log);
+							let ch = client.channels.fetch(config.channels.log);
 							ch.send({
 								embed: {
 									color: 0x31d400,
@@ -388,7 +388,7 @@ client.on('message', msg => {
 				}
 			} else {
 				msg.channel.send("I would do it, but " + msg.author.username + " isn't special enough.\n*User unauthorised*");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -418,7 +418,7 @@ client.on('message', msg => {
 						member.ban('Banned by Smartbot, becuse I was told to ban them.').then(() => {
 							// We let the message author know we were able to kick the person
 							msg.channel.send("Hippity hoppity, " + msg.mentions.users.first() + " is off this property.");
-							let ch = client.channels.get(config.channels.log);
+							let ch = client.channels.fetch(config.channels.log);
 							ch.send({
 								embed: {
 									color: 0x31d400,
@@ -453,7 +453,7 @@ client.on('message', msg => {
 				}
 			} else {
 				msg.channel.send("I would do it, but " + msg.author.username + " isn't special enough.\n*User unauthorised*");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -484,7 +484,7 @@ client.on('message', msg => {
 						member.setRoles([muted]).then(() => {
 							// We let the message author know we were able to allow the person
 							msg.channel.send("Detention, " + msg.mentions.users.first() + " - see me after this.");
-							let ch = client.channels.get(config.channels.log);
+							let ch = client.channels.fetch(config.channels.log);
 							ch.send({
 								embed: {
 									color: 0x31d400,
@@ -501,7 +501,7 @@ client.on('message', msg => {
 									}
 								}
 							});
-							let jail = client.channels.get(config.channels.default);
+							let jail = client.channels.fetch(config.channels.default);
 							jail.send(user.username + ", you have been imprisoned!");
 						}).catch(err => {
 							// An error happened
@@ -521,7 +521,7 @@ client.on('message', msg => {
 				}
 			} else {
 				msg.channel.send("I would do it, but " + msg.author.username + " isn't special enough.\n*User unauthorised*");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -554,7 +554,7 @@ client.on('message', msg => {
 						member.setRoles([muted]).then(() => {
 							// We let the message author know we were able to allow the person
 							msg.channel.send("Thou shalt speaketh no more, " + msg.mentions.users.first() + "!");
-							let ch = client.channels.get(config.channels.log);
+							let ch = client.channels.fetch(config.channels.log);
 							ch.send({
 								embed: {
 									color: 0x31d400,
@@ -571,14 +571,14 @@ client.on('message', msg => {
 									}
 								}
 							});
-							let jail = client.channels.get(config.channels.default);
+							let jail = client.channels.fetch(config.channels.default);
 							jail.send(user.username + ", you have been muted for " + hours + "h " + mins + "m.");
 							setTimeout(function () { //Release them after the timeout
 								let citizen = msg.guild.roles.get(config.released);
 								member.setRoles([citizen]).then(() => {
 									// We let the message author know we were able to allow the person
 									msg.channel.send(msg.mentions.users.first() + " is now unmuted.");
-									let ch = client.channels.get(config.channels.log);
+									let ch = client.channels.fetch(config.channels.log);
 									ch.send({
 										embed: {
 											color: 0x31d400,
@@ -622,7 +622,7 @@ client.on('message', msg => {
 				}
 			} else {
 				msg.channel.send("I would do it, but " + msg.author.username + " isn't special enough.\n*User unauthorised.*");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -652,7 +652,7 @@ client.on('message', msg => {
 						member.setRoles([]).then(() => {
 							// We let the message author know we were able to allow the person
 							msg.channel.send(msg.mentions.users.first() + " is now unmuted.");
-							let ch = client.channels.get(config.channels.log);
+							let ch = client.channels.fetch(config.channels.log);
 							ch.send({
 								embed: {
 									color: 0x31d400,
@@ -687,7 +687,7 @@ client.on('message', msg => {
 				}
 			} else {
 				msg.channel.send("I would do it, but " + msg.author.username + " isn't special enough.\n*You don't have permission.*");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -729,7 +729,7 @@ client.on('message', msg => {
 					sentEmbed.react("✅");
 					sentEmbed.react("❎");
 				});
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0x31d400,
@@ -748,7 +748,7 @@ client.on('message', msg => {
 				});
 			} else {
 				msg.channel.send("I would do it, but " + msg.author.username + " isn't important enough. (*User unauthorised*)");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -793,7 +793,7 @@ client.on('message', msg => {
 					sentEmbed.react("🇩");
 					sentEmbed.react("🇪");
 				});
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0x31d400,
@@ -812,7 +812,7 @@ client.on('message', msg => {
 				});
 			} else {
 				msg.channel.send("I would do it, but " + msg.author.username + " isn't important enough. (*User unauthorised*)");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -854,7 +854,7 @@ client.on('message', msg => {
 					sentEmbed.react("🇦");
 					sentEmbed.react("🇧");
 				});
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0x31d400,
@@ -873,7 +873,7 @@ client.on('message', msg => {
 				});
 			} else {
 				msg.channel.send("I would do it, but " + msg.author.username + " isn't important enough. (*User unauthorised*)");
-				let ch = client.channels.get(config.channels.log);
+				let ch = client.channels.fetch(config.channels.log);
 				ch.send({
 					embed: {
 						color: 0xd4cc00,
@@ -935,7 +935,7 @@ client.on('message', msg => {
 			msg.channel.send("https://tenor.com/view/pingu-school-gif-9416305");
 		}
 	} catch (e) {
-		let ch = client.channels.get(config.channels.log);
+		let ch = client.channels.fetch(config.channels.log);
 		ch.send({
 			embed: {
 				color: 0xd40000,
