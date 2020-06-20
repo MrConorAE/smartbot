@@ -28,7 +28,7 @@ client.on('message', msg => {
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 	let ch = client.channels.fetch(config.channels.log);
-	ch.setTopic("Last restart: " + client.readyAt + " - Version: v" + config.ver);
+	//ch.setTopic("Last restart: " + client.readyAt + " - Version: v" + config.ver);
 	client.user.setActivity(config.activity.content, {
 		type: config.activity.type
 	});
