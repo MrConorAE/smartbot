@@ -17,7 +17,6 @@ function execute(command) {
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-	var server = client.guilds.get("479194770972082176");
 });
 
 client.on('message', msg => {
