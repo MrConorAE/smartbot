@@ -49,7 +49,6 @@ client.on('ready', () => {
 			}
 		}
 	});
-	var server = client.guilds.get("458499904059342848");
 });
 
 client.on('message', msg => {
