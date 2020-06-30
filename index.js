@@ -178,7 +178,7 @@ client.on('message', msg => {
 						name: client.user.username,
 						icon_url: client.user.avatarURL
 					},
-					title: num + " messages cleared in " + msg.channel.name,
+					title: "Messages Cleared",
 					description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
 					timestamp: new Date(),
 					footer: {
@@ -186,6 +186,22 @@ client.on('message', msg => {
 						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 					}
 				});
+			} else {
+				msg.channel.send("No.");
+				log({
+					color: 0xe0e812,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: "Permission Denied",
+					description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				})
 			}
 		}
 		// EASTER EGGS BEGIN HERE
