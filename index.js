@@ -169,7 +169,7 @@ client.on('message', msg => {
 			});
 		} else if (msg.content.startsWith("%clear")) {
 			num = msg.content.slice(7);
-			if (hasRole(msg.author, config.roles.commander)) {
+			if (hasRole(msg.member, config.roles.commander)) {
 				msg.channel.bulkDelete(num + 1);
 				msg.channel.send("Foof! " + num + " messages are now no more.");
 				log({
@@ -201,7 +201,7 @@ client.on('message', msg => {
 						icon_url: client.user.avatarURL,
 						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 					}
-				})
+				});
 			}
 		}
 		// EASTER EGGS BEGIN HERE
