@@ -152,7 +152,11 @@ client.on('message', msg => {
 					}
 				}
 			});
-		} else if (msg.content === "%ping") {
+		} else if (msg.content.startsWith("%clear")) {
+			// To do.
+		}
+		// EASTER EGGS BEGIN HERE
+		else if (msg.content === "%ping") {
 			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
 		}
 	} catch (e) {
