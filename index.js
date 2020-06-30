@@ -15,6 +15,21 @@ function execute(command) {
 	});
 }
 
+function hasRole(m, r) {
+	if (m.roles.cache.some(role => role.id === r)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function log(e) {
+	let c = client.channels.cache.get(config.channels.log);
+	c.send({
+		embed: e
+	});
+}
+
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -153,7 +168,25 @@ client.on('message', msg => {
 				}
 			});
 		} else if (msg.content.startsWith("%clear")) {
-			// To do.
+			num = msg.content.slice(7);
+			if (hasRole(msg.author, config.roles.commander)) {
+				msg.channel.bulkDelete(num + 1);
+				msg.channel.send("Foof! " + num + " messages are now no more.");
+				log({
+					color: 0x03c129,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: num + " messages cleared in " + msg.channel.name,
+					description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				});
+			}
 		}
 		// EASTER EGGS BEGIN HERE
 		else if (msg.content === "%ping") {
