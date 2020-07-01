@@ -302,6 +302,8 @@ client.on('message', msg => {
 			// If someone DARES to say UwU or OwO (shudders), add the Confirmed Furry role to them.
 			const role = msg.guild.roles.cache.find(role => role.id === config.roles.furry);
 			msg.member.roles.add(role);
+			msg.channel.send("This is an OwO/UwU-free zone.")
+			msg.delete();
 		}
 	} catch (e) {
 		let ch = client.channels.cache.get(config.channels.log);
