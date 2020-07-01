@@ -168,8 +168,10 @@ client.on('message', msg => {
 				}
 			});
 		} else if (msg.content.startsWith("%clear")) {
-			num = msg.content.slice(7);
+			// Clear messages in a channel.
+			num = msg.content.slice(7); // Get the amount of messages to clear.
 			if (hasRole(msg.member, config.roles.commander)) {
+				// They are authorised.
 				msg.channel.bulkDelete(Number(num) + 1);
 				msg.channel.send("Foof! " + num + " messages are now no more.");
 				log({
@@ -187,6 +189,7 @@ client.on('message', msg => {
 					}
 				});
 			} else {
+				// They are not authorised.
 				msg.channel.send("No.");
 				log({
 					color: 0xe0e812,
@@ -196,6 +199,86 @@ client.on('message', msg => {
 					},
 					title: "Permission Denied",
 					description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				});
+			}
+		} else if (msg.content.startsWith("%ban")) {
+			// Ban a user.
+			if (hasRole(msg.member, config.roles.commander)) {
+				// They are authorised.
+				user = msg.mentions.users.first();
+				msg.guild.members.ban(user, {
+					reason: `Banned by ${msg.author.username}, using SmartBot.`
+				});
+				msg.channel.send("Hippity hoppity, " + user.username + " is banned from this property.");
+				log({
+					color: 0x03c129,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: "User Banned",
+					description: msg.author.username + " banned " + user.username + ".",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				});
+			} else {
+				// They are not authorised.
+				msg.channel.send("No.");
+				log({
+					color: 0xe0e812,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: "Permission Denied",
+					description: msg.author.username + " attempted to ban " + user.username + ".",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				});
+			}
+		} else if (msg.content.startsWith("%kick")) {
+			// Kick a user.
+			if (hasRole(msg.member, config.roles.commander)) {
+				// They are authorised.
+				const user = msg.mentions.members.first();
+				user.kick(`Kicked by ${msg.author.username}, using SmartBot.`);
+				msg.channel.send("Yeet! " + member.user.username + " is kicked.");
+				log({
+					color: 0x03c129,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: "User Kicked",
+					description: msg.author.username + " kicked " + member.user.username + ".",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				});
+			} else {
+				// They are not authorised.
+				msg.channel.send("No.");
+				log({
+					color: 0xe0e812,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: "Permission Denied",
+					description: msg.author.username + " attempted to kick " + member.user.username + ".",
 					timestamp: new Date(),
 					footer: {
 						icon_url: client.user.avatarURL,
