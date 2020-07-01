@@ -3,6 +3,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require("./config.json");
+const ytdl = require('ytdl-core');
 
 var messages = 0;
 var commands = 0;
@@ -23,16 +24,16 @@ function hasRole(m, r) {
 	}
 }
 
+function randInt(b, t) {
+	return Math.floor((Math.random() * t) + b);
+}
+
 function log(e) {
 	let c = client.channels.cache.get(config.channels.log);
 	c.send({
 		embed: e
 	});
 }
-
-client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
-});
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
@@ -288,7 +289,7 @@ client.on('message', msg => {
 			}
 		}
 		// EASTER EGGS BEGIN HERE
-		else if (msg.content === "%ping") {
+		else if (msg.content === "ping") {
 			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
 		} else if (msg.content.toLowerCase() === "bad bot" || msg.content.toLowerCase() === "bad smartbot") {
 			msg.channel.send("Bad human.");
@@ -384,24 +385,40 @@ client.on('message', msg => {
 			}
 		}
 	} catch (e) {
-		let ch = client.channels.cache.get(config.channels.log);
-		ch.send({
-			embed: {
-				color: 0xd40000,
-				author: {
-					name: client.user.username,
-					icon_url: client.user.avatarURL
-				},
-				title: "Bot Error",
-				description: ("**Error details:** " + e),
-				timestamp: new Date(),
-				footer: {
-					icon_url: client.user.avatarURL,
-					text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-				}
+		msg.channel.send("You broke something. Well done. 👏");
+		log({
+			color: 0xd40000,
+			author: {
+				name: client.user.username,
+				icon_url: client.user.avatarURL
+			},
+			title: "Bot Error",
+			description: ("**Error details:** " + e),
+			timestamp: new Date(),
+			footer: {
+				icon_url: client.user.avatarURL,
+				text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 			}
 		});
 	}
+});
+
+process.on('unhandledRejection', error => function () {
+	console.error('Uncaught Promise Rejection', error);
+	log({
+		color: 0xd40000,
+		author: {
+			name: client.user.username,
+			icon_url: client.user.avatarURL
+		},
+		title: "Unhandled Promise Rejection Error",
+		description: ("**Error details:** " + error),
+		timestamp: new Date(),
+		footer: {
+			icon_url: client.user.avatarURL,
+			text: "Automated message"
+		}
+	});
 });
 
 client.login(config.token);
