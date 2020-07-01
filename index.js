@@ -290,6 +290,98 @@ client.on('message', msg => {
 		// EASTER EGGS BEGIN HERE
 		else if (msg.content === "%ping") {
 			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
+		} else if (msg.content.toLowerCase() === "bad bot" || msg.content.toLowerCase() === "bad smartbot") {
+			msg.channel.send("Bad human.");
+		} else if (msg.content === "F") {
+			msg.channel.send("Respects paid.");
+		} else if (msg.content.toLowerCase() === "rip") {
+			msg.channel.send("Rest in peace. Press F to pay respects.").then(sentMessage => {
+				sentMessage.react('🇫');
+			});
+		} else if (msg.content === "ripperoni") {
+			msg.channel.send("Rest in pepperonis. Press 🍕 to pay respects.").then(sentMessage => {
+				sentMessage.react('🍕');
+			});
+		} else if (msg.content.includes("UwU") || msg.content.includes("OwO")) {
+			// If someone DARES to say UwU or OwO (shudders), add the Confirmed Furry role to them.
+			const role = msg.guild.roles.cache.find(role => role.id === config.roles.furry);
+			msg.member.roles.add(role);
+			msg.channel.send("This is a furry-free zone.");
+			msg.delete();
+		} else if (msg.content === "%voice") {
+			if (msg.channel.type !== 'text') return;
+
+			const voiceChannel = msg.member.voice.channel;
+
+			if (!voiceChannel) {
+				return msg.channel.send('Join a voice channel first, dum dum');
+			}
+
+			voiceChannel.join().then(connection => {
+				stream = undefined;
+				if (randInt(0, 1) == 0) {
+					stream = ytdl(config.audio.inhale, {
+						filter: 'audioonly'
+					});
+				} else {
+					stream = ytdl(config.audio.throat, {
+						filter: 'audioonly'
+					});
+				}
+				const dispatcher = connection.play(stream);
+				dispatcher.on('end', () => function () {
+					stream2 = undefined;
+					if (randInt(0, 1) == 0) {
+						stream2 = ytdl(config.audio.reee, {
+							filter: 'audioonly'
+						});
+					} else {
+						stream2 = ytdl(config.audio.rickroll, {
+							filter: 'audioonly'
+						});
+					}
+					const dispatcher = connection.play(stream2);
+					dispatcher.on('end', () => voiceChannel.leave());
+				});
+			});
+		}
+		// USEFUL COMMANDS
+		else if (msg.content === "%%restart") {
+			if (msg.author.id === "491026695244087316") {
+				msg.channel.send("Right, off to kill myself.");
+				log({
+					color: 0x03c129,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: "Restarting...",
+					description: msg.author.username + " requested a restart.",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				});
+				process.exit();
+			} else {
+				// They are not authorised.
+				msg.channel.send("No.");
+				log({
+					color: 0xe0e812,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: "Permission Denied",
+					description: msg.author.username + " attempted to request a restart.",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				});
+			}
 		}
 	} catch (e) {
 		let ch = client.channels.cache.get(config.channels.log);
