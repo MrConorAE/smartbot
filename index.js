@@ -319,27 +319,29 @@ client.on('message', msg => {
 			}
 
 			voiceChannel.join().then(connection => {
+				stream = None;
 				if (randInt(0, 1) == 0) {
-					const stream = ytdl(config.audio.inhale, {
+					stream = ytdl(config.audio.inhale, {
 						filter: 'audioonly'
 					});
 				} else {
-					const stream = ytdl(config.audio.throat, {
+					stream = ytdl(config.audio.throat, {
 						filter: 'audioonly'
 					});
 				}
 				const dispatcher = connection.play(stream);
 				dispatcher.on('end', () => function () {
+					stream2 = None;
 					if (randInt(0, 1) == 0) {
-						const stream = ytdl(config.audio.reee, {
+						stream2 = ytdl(config.audio.reee, {
 							filter: 'audioonly'
 						});
 					} else {
-						const stream = ytdl(config.audio.rickroll, {
+						stream2 = ytdl(config.audio.rickroll, {
 							filter: 'audioonly'
 						});
 					}
-					const dispatcher = connection.play(stream);
+					const dispatcher = connection.play(stream2);
 					dispatcher.on('end', () => voiceChannel.leave());
 				});
 			});
