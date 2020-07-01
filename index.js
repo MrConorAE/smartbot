@@ -310,9 +310,9 @@ client.on('message', msg => {
 			msg.channel.send("This is a furry-free zone.");
 			msg.delete();
 		} else if (msg.content === "%voice") {
-			if (message.channel.type !== 'text') return;
+			if (msg.channel.type !== 'text') return;
 
-			const voiceChannel = message.member.voice.channel;
+			const voiceChannel = msg.member.voice.channel;
 
 			if (!voiceChannel) {
 				return msg.channel.send('Join a voice channel first, dum dum');
@@ -343,6 +343,44 @@ client.on('message', msg => {
 					dispatcher.on('end', () => voiceChannel.leave());
 				});
 			});
+		}
+		// USEFUL COMMANDS
+		else if (msg.content === "%%restart") {
+			if (msg.author.id === "491026695244087316") {
+				msg.channel.send("Right, off to kill myself.");
+				log({
+					color: 0x03c129,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: "Restarting...",
+					description: msg.author.username + " requested a restart.",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				});
+				process.exit();
+			} else {
+				// They are not authorised.
+				msg.channel.send("No.");
+				log({
+					color: 0xe0e812,
+					author: {
+						name: client.user.username,
+						icon_url: client.user.avatarURL
+					},
+					title: "Permission Denied",
+					description: msg.author.username + " attempted to request a restart.",
+					timestamp: new Date(),
+					footer: {
+						icon_url: client.user.avatarURL,
+						text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+					}
+				});
+			}
 		}
 	} catch (e) {
 		msg.channel.send("You broke something. Well done. 👏");
