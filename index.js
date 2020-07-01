@@ -251,8 +251,8 @@ client.on('message', msg => {
 			// Kick a user.
 			if (hasRole(msg.member, config.roles.commander)) {
 				// They are authorised.
-				const user = msg.mentions.members.first();
-				user.kick(`Kicked by ${msg.author.username}, using SmartBot.`);
+				const member = msg.mentions.members.first();
+				member.kick(`Kicked by ${msg.author.username}, using SmartBot.`);
 				msg.channel.send("Yeet! " + member.user.username + " is kicked.");
 				log({
 					color: 0x03c129,
