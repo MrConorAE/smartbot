@@ -14,5 +14,11 @@
 		"polls": "696898659140501624",
 		"default": "696898874455097397"
 	},
+	"audio": {
+		"inhale": "https://www.youtube.com/watch?v=-_B-Bbyzfco",
+		"throat": "https://www.youtube.com/watch?v=f1IT2y_l_zc",
+		"reee": "https://www.youtube.com/watch?v=ptXsXrMs5No",
+		"rickroll": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+	},
 	"ver": "0.1.0"
 }

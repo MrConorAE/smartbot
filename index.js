@@ -3,6 +3,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require("./config.json");
+const ytdl = require('ytdl-core');
 
 var messages = 0;
 var commands = 0;
@@ -21,6 +22,10 @@ function hasRole(m, r) {
 	} else {
 		return false;
 	}
+}
+
+function randInt(b, t) {
+	return Math.floor((Math.random() * t) + b);
 }
 
 function log(e) {
@@ -302,28 +307,78 @@ client.on('message', msg => {
 			// If someone DARES to say UwU or OwO (shudders), add the Confirmed Furry role to them.
 			const role = msg.guild.roles.cache.find(role => role.id === config.roles.furry);
 			msg.member.roles.add(role);
-			msg.channel.send("This is a furry-free zone.")
+			msg.channel.send("This is a furry-free zone.");
 			msg.delete();
+		} else if (msg.content === "%voice") {
+			if (message.channel.type !== 'text') return;
+
+			const voiceChannel = message.member.voice.channel;
+
+			if (!voiceChannel) {
+				return msg.channel.send('Join a voice channel first, dum dum');
+			}
+
+			voiceChannel.join().then(connection => {
+				if (randInt(0, 1) == 0) {
+					const stream = ytdl(config.audio.inhale, {
+						filter: 'audioonly'
+					});
+				} else {
+					const stream = ytdl(config.audio.throat, {
+						filter: 'audioonly'
+					});
+				}
+				const dispatcher = connection.play(stream);
+				dispatcher.on('end', () => function () {
+					if (randInt(0, 1) == 0) {
+						const stream = ytdl(config.audio.reee, {
+							filter: 'audioonly'
+						});
+					} else {
+						const stream = ytdl(config.audio.rickroll, {
+							filter: 'audioonly'
+						});
+					}
+					const dispatcher = connection.play(stream);
+					dispatcher.on('end', () => voiceChannel.leave());
+				});
+			});
 		}
 	} catch (e) {
-		let ch = client.channels.cache.get(config.channels.log);
-		ch.send({
-			embed: {
-				color: 0xd40000,
-				author: {
-					name: client.user.username,
-					icon_url: client.user.avatarURL
-				},
-				title: "Bot Error",
-				description: ("**Error details:** " + e),
-				timestamp: new Date(),
-				footer: {
-					icon_url: client.user.avatarURL,
-					text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-				}
+		msg.channel.send("You broke something. Well done. 👏");
+		log({
+			color: 0xd40000,
+			author: {
+				name: client.user.username,
+				icon_url: client.user.avatarURL
+			},
+			title: "Bot Error",
+			description: ("**Error details:** " + e),
+			timestamp: new Date(),
+			footer: {
+				icon_url: client.user.avatarURL,
+				text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 			}
 		});
 	}
+});
+
+process.on('unhandledRejection', error => function () {
+	console.error('Uncaught Promise Rejection', error);
+	log({
+		color: 0xd40000,
+		author: {
+			name: client.user.username,
+			icon_url: client.user.avatarURL
+		},
+		title: "Unhandled Promise Rejection Error",
+		description: ("**Error details:** " + error),
+		timestamp: new Date(),
+		footer: {
+			icon_url: client.user.avatarURL,
+			text: "Automated message"
+		}
+	});
 });
 
 client.login(config.token);
