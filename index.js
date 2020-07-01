@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require("./config.json");
 const ytdl = require('ytdl-core');
+var opus = require('opusscript');
 
 var messages = 0;
 var commands = 0;
