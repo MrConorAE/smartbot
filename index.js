@@ -288,8 +288,24 @@ client.on('message', msg => {
 			}
 		}
 		// EASTER EGGS BEGIN HERE
-		else if (msg.content === "%ping") {
+		else if (msg.content === "ping") {
 			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
+		} else if (msg.content.toLowerCase() === "bad bot" || msg.content.toLowerCase() === "bad smartbot") {
+			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
+		} else if (msg.content === "F") {
+			msg.channel.send("Respects paid.");
+		} else if (msg.content.toLowerCase() === "rip") {
+			msg.channel.send("Rest in peace. Press F to pay respects.").then(sentMessage => {
+				sentMessage.react('🇫');
+			});
+		} else if (msg.content === "ripperoni") {
+			msg.channel.send("Rest in pepperonis. Press 🍕 to pay respects.").then(sentMessage => {
+				sentMessage.react('🍕');
+			});
+		} else if (msg.content.includes("UwU") || msg.content.includes("OwO")) {
+			// If someone DARES to say UwU or OwO (shudders), add the Confirmed Furry role to them.
+			const role = msg.guild.roles.cache.find(role => role.id === config.roles.furry);
+			msg.member.roles.add(role);
 		}
 	} catch (e) {
 		let ch = client.channels.cache.get(config.channels.log);
