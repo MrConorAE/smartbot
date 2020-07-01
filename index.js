@@ -301,8 +301,7 @@ client.on('message', msg => {
 		} else if (msg.content.includes("UwU") || msg.content.includes("OwO")) {
 			// If someone DARES to say UwU or OwO (shudders), add the Confirmed Furry role to them.
 			const role = msg.guild.roles.cache.find(role => role.id === config.roles.furry);
-			const member = msg.member;
-			member.roles.add(role);
+			msg.member.roles.add(role);
 		}
 	} catch (e) {
 		let ch = client.channels.cache.get(config.channels.log);
