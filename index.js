@@ -32,10 +32,6 @@ function log(e) {
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-});
-
-client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
 	let ch = client.channels.cache.get(config.channels.log);
 	client.user.setActivity(config.activity.content, {
 		type: config.activity.type
@@ -305,7 +301,8 @@ client.on('message', msg => {
 		} else if (msg.content.includes("UwU") || msg.content.includes("OwO")) {
 			// If someone DARES to say UwU or OwO (shudders), add the Confirmed Furry role to them.
 			const role = msg.guild.roles.cache.find(role => role.id === config.roles.furry);
-			msg.member.roles.add(role);
+			const member = msg.member;
+			member.roles.add(role);
 		}
 	} catch (e) {
 		let ch = client.channels.cache.get(config.channels.log);
