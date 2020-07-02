@@ -331,19 +331,18 @@ client.on('message', msg => {
 					});
 				}
 				const dispatcher = connection.play(stream);
-				dispatcher.on('end', () => function () {
-					stream2 = undefined;
+				dispatcher.on('finish', () => function () {
 					if (randInt(0, 1) == 0) {
-						stream2 = ytdl(config.audio.reee, {
+						stream = ytdl(config.audio.reee, {
 							filter: 'audioonly'
 						});
 					} else {
-						stream2 = ytdl(config.audio.rickroll, {
+						stream = ytdl(config.audio.rickroll, {
 							filter: 'audioonly'
 						});
 					}
-					const dispatcher = connection.play(stream2);
-					dispatcher.on('end', () => voiceChannel.leave());
+					const dispatcher = connection.play(stream);
+					dispatcher.on('finish', () => voiceChannel.leave());
 				});
 			});
 		}
