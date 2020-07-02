@@ -342,7 +342,7 @@ client.on('message', msg => {
 					});
 				}
 				dispatcher = connection.play(stream);
-				dispatcher.on('end', () => voiceChannel.leave());
+				dispatcher.on('end', () => connection.disconnect());
 				//});
 			});
 		}
