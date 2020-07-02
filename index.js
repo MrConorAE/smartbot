@@ -321,7 +321,7 @@ client.on('message', msg => {
 
 			voiceChannel.join().then(connection => {
 				stream = undefined;
-				if (randInt(0, 1) == 0) {
+				/*if (randInt(0, 1) == 0) {
 					stream = ytdl(config.audio.inhale, {
 						filter: 'audioonly'
 					});
@@ -330,20 +330,20 @@ client.on('message', msg => {
 						filter: 'audioonly'
 					});
 				}
-				const dispatcher = connection.play(stream);
-				dispatcher.on('finish', () => function () {
-					if (randInt(0, 1) == 0) {
-						stream = ytdl(config.audio.reee, {
-							filter: 'audioonly'
-						});
-					} else {
-						stream = ytdl(config.audio.rickroll, {
-							filter: 'audioonly'
-						});
-					}
-					const dispatcher = connection.play(stream);
-					dispatcher.on('finish', () => voiceChannel.leave());
-				});
+				dispatcher = connection.play(stream);
+				dispatcher.on('end', () => function () {*/
+				if (randInt(0, 1) == 0) {
+					stream = ytdl(config.audio.reee, {
+						filter: 'audioonly'
+					});
+				} else {
+					stream = ytdl(config.audio.rickroll, {
+						filter: 'audioonly'
+					});
+				}
+				dispatcher = connection.play(stream);
+				dispatcher.on('end', () => voiceChannel.leave());
+				//});
 			});
 		}
 		// USEFUL COMMANDS
