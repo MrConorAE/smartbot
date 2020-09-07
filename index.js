@@ -292,10 +292,16 @@ client.on('message', msg => {
 		// EASTER EGGS BEGIN HERE
 		else if (msg.content === "ping") {
 			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
-		} else if (msg.content.toLowerCase() === "bad bot" || msg.content.toLowerCase() === "bad smartbot") {
-			msg.channel.send("Bad human.");
+		} else if (msg.content.toLowerCase().includes("bad bot") || msg.content.toLowerCase().includes("bad smartbot")) {
+			if (randInt(0, 2) == 1) {
+				msg.channel.send("You will die tonight.");
+			} else {
+				msg.channel.send("Bad human.");
+			}
 		} else if (msg.content === "F") {
-			msg.channel.send("Respects paid.");
+			msg.channel.send("Respects paid.").then(sentMessage => {
+				sentMessage.react('🇫');
+			});
 		} else if (msg.content.toLowerCase() === "rip") {
 			msg.channel.send("Rest in peace. Press F to pay respects.").then(sentMessage => {
 				sentMessage.react('🇫');
@@ -316,7 +322,7 @@ client.on('message', msg => {
 			const voiceChannel = msg.member.voice.channel;
 
 			if (!voiceChannel) {
-				return msg.channel.send('Join a voice channel first, dum dum');
+				return msg.channel.send('Join a voice channel first, dum dum.');
 			}
 
 			voiceChannel.join().then(connection => {
@@ -349,7 +355,7 @@ client.on('message', msg => {
 		// USEFUL COMMANDS
 		else if (msg.content === "%%restart") {
 			if (msg.author.id === "491026695244087316") {
-				msg.channel.send("Right, off to kill myself.");
+				msg.channel.send("Right, off to kill myself. I'll be back...");
 				log({
 					color: 0x03c129,
 					author: {
@@ -385,7 +391,9 @@ client.on('message', msg => {
 			}
 		}
 	} catch (e) {
-		msg.channel.send("You broke something. Well done. 👏");
+		msg.channel.send("You broke something. Well done. Please contact MrConorAE.").then(sentMessage => {
+			sentMessage.react('👏');
+		});
 		log({
 			color: 0xd40000,
 			author: {
@@ -404,6 +412,8 @@ client.on('message', msg => {
 });
 
 process.on('unhandledRejection', error => function () {
+	ch = client.channels.cache.get(config.channels.general);
+	ch.send("Welp, Unhandled Promise Rejection. Please contact MrConorAE.")
 	console.error('Uncaught Promise Rejection', error);
 	log({
 		color: 0xd40000,
@@ -411,7 +421,7 @@ process.on('unhandledRejection', error => function () {
 			name: client.user.username,
 			icon_url: client.user.avatarURL
 		},
-		title: "Unhandled Promise Rejection Error",
+		title: "Unhandled Promise Rejection",
 		description: ("**Error details:** " + error),
 		timestamp: new Date(),
 		footer: {
