@@ -210,9 +210,9 @@ client.on('message', msg => {
 			}
 		} else if (msg.content.startsWith("%ban")) {
 			// Ban a user.
+			user = msg.mentions.users.first();
 			if (hasRole(msg.member, config.roles.commander)) {
 				// They are authorised.
-				user = msg.mentions.users.first();
 				msg.guild.members.ban(user, {
 					reason: `Banned by ${msg.author.username}, using SmartBot.`
 				});
@@ -413,7 +413,7 @@ client.on('message', msg => {
 
 process.on('unhandledRejection', error => function () {
 	ch = client.channels.cache.get(config.channels.general);
-	ch.send("Welp, Unhandled Promise Rejection. Please contact MrConorAE.")
+	ch.send("Welp, Unhandled Promise Rejection. Please contact MrConorAE.");
 	console.error('Uncaught Promise Rejection', error);
 	log({
 		color: 0xd40000,
