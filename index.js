@@ -67,10 +67,15 @@ client.on('message', msg => {
 		let command = msg.content.split(' ')[0].slice(1);
 		let args = msg.content.replace(config.prefix + command, '').trim();
 		messages = messages + 1; // Add one to the messages count.
-		// COMMANDS BEGIN HERE
+		//#region 
+		// COMMANDS BEGIN HERE! ##########################################################
 		switch (command) {
 			case "stat":
 				// Reply with the statistics since the last restart.
+				let days = Math.floor(client.uptime / 86400000);
+				let hours = Math.floor(client.uptime / 3600000) % 24;
+				let minutes = Math.floor(client.uptime / 60000) % 60;
+				let seconds = Math.floor(client.uptime / 1000) % 60;
 				commands = commands + 1;
 				msg.channel.send({
 					embed: {
@@ -90,8 +95,12 @@ client.on('message', msg => {
 								value: commands
 							},
 							{
+								name: "Ping",
+								value: client.ping
+							},
+							{
 								name: "Uptime",
-								value: client.uptime
+								value: days + "d " + hours + "h " + minutes + "m " + seconds + "s"
 							}
 						],
 						timestamp: new Date(),
@@ -452,9 +461,11 @@ client.on('message', msg => {
 				}
 				break;
 		}
+		//#endregion
 		// EASTER EGGS BEGIN HERE
 		if (msg.content === "ping") {
 			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
+			msg.channel.send("*" + client.ping + "ms*");
 		} else if (msg.content.toLowerCase().includes("bad bot") || msg.content.toLowerCase().includes("bad smartbot")) {
 			if (randInt(0, 2) == 1) {
 				msg.channel.send("You will die tonight.");
@@ -490,7 +501,7 @@ client.on('message', msg => {
 				name: client.user.username,
 				icon_url: client.user.avatarURL
 			},
-			title: "Bot Error",
+			title: "Error!",
 			description: ("**Error details:** " + e),
 			timestamp: new Date(),
 			footer: {
