@@ -62,7 +62,7 @@ client.on('ready', () => {
 
 client.on('message', msg => {
 	try {
-		if (msg.channel.type != 'text' || msg.author.bot || !msg.startsWith(config.prefix))
+		if (msg.channel.type != 'text' || msg.author.bot || !msg.content.startsWith(config.prefix))
 			return;
 		let command = msg.content.split(' ')[0].slice(1);
 		let args = msg.content.replace(config.prefix + command, '').trim();
