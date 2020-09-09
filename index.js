@@ -62,6 +62,8 @@ client.on('ready', () => {
 
 client.on('message', msg => {
 	try {
+		if (message.channel.type != 'text' || message.author.bot || !message.startsWith(config.prefix))
+			return;
 		messages = messages + 1; // Add one to the messages count.
 		// COMMANDS BEGIN HERE
 		if (msg.content === "%stat") {
