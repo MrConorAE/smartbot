@@ -39,7 +39,7 @@ function log(e) {
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 	let ch = client.channels.cache.get(config.channels.log);
-	client.user.setActivity(config.activity.content, {
+	client.user.setActivity((config.activity.content + " | " + config.prefix + "help"), {
 		type: config.activity.type
 	});
 	ch.send({
@@ -62,10 +62,10 @@ client.on('ready', () => {
 
 client.on('message', msg => {
 	try {
-		if (message.channel.type != 'text' || message.author.bot || !message.startsWith(config.prefix))
+		if (msg.channel.type != 'text' || msg.author.bot || !msg.startsWith(config.prefix))
 			return;
-		let command = message.content.split(' ')[0].slice(1);
-		let args = message.content.replace(config.prefix + command, '').trim();
+		let command = msg.content.split(' ')[0].slice(1);
+		let args = msg.content.replace(config.prefix + command, '').trim();
 		messages = messages + 1; // Add one to the messages count.
 		// COMMANDS BEGIN HERE
 		switch (command) {
