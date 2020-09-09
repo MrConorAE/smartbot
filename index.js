@@ -67,6 +67,36 @@ client.on('message', msg => {
 		let command = msg.content.split(' ')[0].slice(1);
 		let args = msg.content.replace(config.prefix + command, '').trim();
 		messages = messages + 1; // Add one to the messages count.
+		// EASTER EGGS BEGIN HERE
+		// We have to check if it's an Easter egg FIRST, because the switch/case breaks.
+		if (msg.content === "ping") {
+			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
+			msg.channel.send("*" + client.ping + "ms*");
+		} else if (msg.content.toLowerCase().includes("bad bot") || msg.content.toLowerCase().includes("bad smartbot")) {
+			if (randInt(0, 2) == 1) {
+				msg.channel.send("You will die tonight.");
+			} else {
+				msg.channel.send("Bad human.");
+			}
+		} else if (msg.content === "F") {
+			msg.channel.send("Respects paid.").then(sentMessage => {
+				sentMessage.react('🇫');
+			});
+		} else if (msg.content.toLowerCase() === "rip") {
+			msg.channel.send("Rest in peace. Press F to pay respects.").then(sentMessage => {
+				sentMessage.react('🇫');
+			});
+		} else if (msg.content === "ripperoni") {
+			msg.channel.send("Rest in pepperonis. Press 🍕 to pay respects.").then(sentMessage => {
+				sentMessage.react('🍕');
+			});
+		} else if (msg.content.includes("UwU") || msg.content.includes("OwO")) {
+			// If someone DARES to say UwU or OwO (shudders), add the Confirmed Furry role to them.
+			const role = msg.guild.roles.cache.find(role => role.id === config.roles.furry);
+			msg.member.roles.add(role);
+			msg.channel.send("please, for the love of god, stop");
+			msg.delete();
+		}
 		//#region 
 		// COMMANDS BEGIN HERE! ##########################################################
 		switch (command) {
@@ -462,35 +492,6 @@ client.on('message', msg => {
 				break;
 		}
 		//#endregion
-		// EASTER EGGS BEGIN HERE
-		if (msg.content === "ping") {
-			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
-			msg.channel.send("*" + client.ping + "ms*");
-		} else if (msg.content.toLowerCase().includes("bad bot") || msg.content.toLowerCase().includes("bad smartbot")) {
-			if (randInt(0, 2) == 1) {
-				msg.channel.send("You will die tonight.");
-			} else {
-				msg.channel.send("Bad human.");
-			}
-		} else if (msg.content === "F") {
-			msg.channel.send("Respects paid.").then(sentMessage => {
-				sentMessage.react('🇫');
-			});
-		} else if (msg.content.toLowerCase() === "rip") {
-			msg.channel.send("Rest in peace. Press F to pay respects.").then(sentMessage => {
-				sentMessage.react('🇫');
-			});
-		} else if (msg.content === "ripperoni") {
-			msg.channel.send("Rest in pepperonis. Press 🍕 to pay respects.").then(sentMessage => {
-				sentMessage.react('🍕');
-			});
-		} else if (msg.content.includes("UwU") || msg.content.includes("OwO")) {
-			// If someone DARES to say UwU or OwO (shudders), add the Confirmed Furry role to them.
-			const role = msg.guild.roles.cache.find(role => role.id === config.roles.furry);
-			msg.member.roles.add(role);
-			msg.channel.send("please, for the love of god, stop");
-			msg.delete();
-		}
 	} catch (e) {
 		msg.channel.send("You broke something. Well done. Please contact MrConorAE.").then(sentMessage => {
 			sentMessage.react('👏');
