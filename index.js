@@ -338,7 +338,7 @@ client.on('message', msg => {
 				// USEFUL COMMANDS
 			case "restart":
 				if (msg.author.id === "491026695244087316") {
-					msg.channel.send("Right, off to kill myself. I'll be back...");
+					msg.channel.send("Wheeee! Let's get reincarnated by PM2!");
 					log({
 						color: 0x03c129,
 						author: {
@@ -365,6 +365,84 @@ client.on('message', msg => {
 						},
 						title: "Permission Denied",
 						description: msg.author.username + " attempted to request a restart.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: client.user.avatarURL,
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				}
+				break;
+			case "reconnect":
+				if (msg.author.id === "491026695244087316") {
+					msg.channel.send("'Turn it off and on again', they said...");
+					log({
+						color: 0x03c129,
+						author: {
+							name: client.user.username,
+							icon_url: client.user.avatarURL
+						},
+						title: "Restarting...",
+						description: msg.author.username + " requested a reconnection.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: client.user.avatarURL,
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+					client.destroy().then(() => {
+						client.login('token');
+					});
+				} else {
+					// They are not authorised.
+					msg.channel.send("No.");
+					log({
+						color: 0xe0e812,
+						author: {
+							name: client.user.username,
+							icon_url: client.user.avatarURL
+						},
+						title: "Permission Denied",
+						description: msg.author.username + " attempted to request a reconnection.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: client.user.avatarURL,
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				}
+				break;
+			case "shutdown":
+				if (msg.author.id === "491026695244087316") {
+					msg.channel.send("Right, off to kill myself.");
+					log({
+						color: 0x03c129,
+						author: {
+							name: client.user.username,
+							icon_url: client.user.avatarURL
+						},
+						title: "Shutting down...",
+						description: msg.author.username + " requested a shutdown.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: client.user.avatarURL,
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+					client.destroy().then(() => {
+						client.login('token');
+					});
+				} else {
+					// They are not authorised.
+					msg.channel.send("No.");
+					log({
+						color: 0xe0e812,
+						author: {
+							name: client.user.username,
+							icon_url: client.user.avatarURL
+						},
+						title: "Permission Denied",
+						description: msg.author.username + " attempted to request a shutdown.",
 						timestamp: new Date(),
 						footer: {
 							icon_url: client.user.avatarURL,
