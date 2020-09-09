@@ -62,11 +62,8 @@ client.on('ready', () => {
 
 client.on('message', msg => {
 	try {
-		if (msg.channel.type != 'text' || msg.author.bot || !msg.content.startsWith(config.prefix))
-			return;
-		let command = msg.content.split(' ')[0].slice(1);
-		let args = msg.content.replace(config.prefix + command, '').trim();
 		messages = messages + 1; // Add one to the messages count.
+		//#region
 		// EASTER EGGS BEGIN HERE
 		// We have to check if it's an Easter egg FIRST, because the switch/case breaks.
 		if (msg.content === "ping") {
@@ -97,7 +94,12 @@ client.on('message', msg => {
 			msg.channel.send("please, for the love of god, stop");
 			msg.delete();
 		}
+		//#endregion
 		//#region 
+		if (msg.channel.type != 'text' || msg.author.bot || !msg.content.startsWith(config.prefix))
+			return;
+		let command = msg.content.split(' ')[0].slice(1);
+		let args = msg.content.replace(config.prefix + command, '').trim();
 		// COMMANDS BEGIN HERE! ##########################################################
 		switch (command) {
 			case "stat":
