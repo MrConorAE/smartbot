@@ -47,7 +47,7 @@ client.on('ready', () => {
 			color: config.colors.success,
 			author: {
 				name: "Online",
-				icon_url: "./icons/connected.png"
+				icon_url: "https://i.ibb.co/mNyyfLc/connected.png"
 			},
 			title: "Connected!",
 			description: (`Version: ${config.ver}.`),
@@ -113,7 +113,7 @@ client.on('message', msg => {
 						color: config.colors.info,
 						author: {
 							name: "Statistics",
-							icon_url: "./icons/statistics.png"
+							icon_url: "https://i.ibb.co/7GVn47j/statistics.png"
 						},
 						title: "Server Statistics",
 						description: "Statistics since the last restart.",
@@ -147,7 +147,7 @@ client.on('message', msg => {
 						color: config.colors.info,
 						author: {
 							name: "Help",
-							icon_url: "./icons/help.png"
+							icon_url: "https://i.ibb.co/0s5M7LX/help.png"
 						},
 						title: "Command List",
 						description: "Here's a list of commands. Some of these require the Bot Commander role.\n\nKey: <...> = argument, (1/2/3/...) = options, @user = mention, [argument] = optional argument",
@@ -184,7 +184,7 @@ client.on('message', msg => {
 						color: config.colors.info,
 						author: {
 							name: "Changelog",
-							icon_url: "./icons/changelog.png"
+							icon_url: "https://i.ibb.co/dK7CzfM/changelog.png"
 						},
 						title: "Changelog for v" + config.ver,
 						description: "Here's the changelog for the last update, telling you what's new, different or removed.",
@@ -244,7 +244,7 @@ client.on('message', msg => {
 						color: config.colors.success,
 						author: {
 							name: "Bulk Delete Successful",
-							icon_url: "./icons/bulk_clear.png"
+							icon_url: "https://i.ibb.co/DrPgS1T/bulk-clear.png"
 						},
 						title: "Messages Cleared!",
 						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
@@ -261,7 +261,7 @@ client.on('message', msg => {
 						color: config.colors.warning,
 						author: {
 							name: "Permission Denied",
-							icon_url: "./icons/permissions.png"
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
 						},
 						title: "Bulk Delete denied.",
 						description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
@@ -286,7 +286,7 @@ client.on('message', msg => {
 						color: config.colors.success,
 						author: {
 							name: "Ban Successful",
-							icon_url: "./icons/ban.png"
+							icon_url: "https://i.ibb.co/x3BrRKs/ban.png"
 						},
 						title: "User banned!",
 						description: msg.author.username + " banned " + user.username + ".",
@@ -303,7 +303,7 @@ client.on('message', msg => {
 						color: config.colors.warning,
 						author: {
 							name: "Permission Denied",
-							icon_url: "./icons/permissions.png"
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
 						},
 						title: "Ban denied.",
 						description: msg.author.username + " attempted to ban " + user.username + ".",
@@ -326,7 +326,7 @@ client.on('message', msg => {
 						color: config.colors.success,
 						author: {
 							name: "Kick Successful",
-							icon_url: "./icons/kick.png"
+							icon_url: "https://i.ibb.co/CKHyTwT/kick.png"
 						},
 						title: "User kicked!",
 						description: msg.author.username + " kicked " + member.user.username + ".",
@@ -343,7 +343,7 @@ client.on('message', msg => {
 						color: config.colors.warning,
 						author: {
 							name: "Permission Denied",
-							icon_url: "./icons/permissions.png"
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
 						},
 						title: "Kick denied.",
 						description: msg.author.username + " attempted to kick " + member.user.username + ".",
@@ -399,7 +399,7 @@ client.on('message', msg => {
 						color: config.colors.info,
 						author: {
 							name: "Restarting",
-							icon_url: "./icons/reload.png"
+							icon_url: "https://i.ibb.co/556TBgw/reload.png"
 						},
 						title: "Restarting...",
 						description: msg.author.username + " requested a restart.",
@@ -417,7 +417,7 @@ client.on('message', msg => {
 						color: config.colors.warning,
 						author: {
 							name: "Permission Denied",
-							icon_url: "./icons/permissions.png"
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
 						},
 						title: "Restart denied.",
 						description: msg.author.username + " attempted to request a restart.",
@@ -436,7 +436,7 @@ client.on('message', msg => {
 						color: config.colors.info,
 						author: {
 							name: "Reconnecting",
-							icon_url: "./icons/reload.png"
+							icon_url: "https://i.ibb.co/556TBgw/reload.png"
 						},
 						title: "Reconnecting to Discord...",
 						description: msg.author.username + " requested a reconnection.",
@@ -456,7 +456,7 @@ client.on('message', msg => {
 						color: config.colors.warning,
 						author: {
 							name: "Permission Denied",
-							icon_url: "./icons/permissions.png"
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
 						},
 						title: "Reconnection denied.",
 						description: msg.author.username + " attempted to request a reconnection.",
@@ -475,7 +475,7 @@ client.on('message', msg => {
 						color: config.colors.error,
 						author: {
 							name: "Shutting Down",
-							icon_url: "./icons/shutdown.png"
+							icon_url: "https://i.ibb.co/GxXH2Wm/shutdown.png"
 						},
 						title: "Shutting down bot...",
 						description: msg.author.username + " requested a shutdown.",
@@ -495,7 +495,7 @@ client.on('message', msg => {
 						color: config.colors.warning,
 						author: {
 							name: "Permission Denied",
-							icon_url: "./icons/permissions.png"
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
 						},
 						title: "Shutdown denied",
 						description: msg.author.username + " attempted to request a shutdown.",
@@ -517,7 +517,7 @@ client.on('message', msg => {
 			color: config.colors.error,
 			author: {
 				name: "Error",
-				icon_url: "./icons/error.png"
+				icon_url: "https://i.ibb.co/GMfJcN5/error.png"
 			},
 			title: "Exception Thrown",
 			description: ("**Error details:** " + e),
@@ -538,7 +538,7 @@ process.on('unhandledRejection', error => function () {
 		color: config.colors.error,
 		author: {
 			name: "Error",
-			icon_url: "./icons/error.png"
+			icon_url: "https://i.ibb.co/GMfJcN5/error.png"
 		},
 		title: "Unhandled Promise Rejection",
 		description: ("**Error details:** " + error),
