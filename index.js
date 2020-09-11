@@ -243,8 +243,8 @@ client.on('message', msg => {
 					log({
 						color: 0x03c129,
 						author: {
-							name: "",
-							icon_url: client.user.avatarURL()
+							name: " ",
+							icon_url: "https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
 						},
 						title: "Messages Cleared",
 						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
