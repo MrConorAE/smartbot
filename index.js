@@ -240,7 +240,7 @@ client.on('message', msg => {
 			case "clear":
 				// Clear messages in a channel.
 				num = msg.content.replace(config.prefix + command, '').trim(); // Get the amount of messages to clear.
-				if (num == "" || num < 1) {
+				if (num == "" || parseInt(num) < 1 || isNaN(parseInt(num))) {
 					msg.channel.send("You know, it'd be nice if you *actually told me how many to clear*...");
 					return;
 				}
