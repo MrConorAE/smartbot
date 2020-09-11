@@ -216,6 +216,10 @@ client.on('message', msg => {
 			case "suggest":
 				suggestion = msg.content.replace(command, '').trim();
 				suggestionChannel = client.channels.cache.get(config.channels.videos);
+				if (suggestion == "") {
+					msg.channel.send("You know, it'd be nice if you *actually suggested something*...");
+					return;
+				}
 				suggestionChannel.send({
 					embed: {
 						color: config.colors.info,
@@ -235,7 +239,11 @@ client.on('message', msg => {
 				break;
 			case "clear":
 				// Clear messages in a channel.
-				num = args[0]; // Get the amount of messages to clear.
+				num = msg.content.replace(command, '').trim(); // Get the amount of messages to clear.
+				if (num.isNaN() || num == "" || num < 1) {
+					msg.channel.send("You know, it'd be nice if you *actually told me how many to clear*...");
+					return;
+				}
 				if (hasRole(msg.member, config.roles.commander)) {
 					// They are authorised.
 					msg.channel.bulkDelete(Number(num) + 1);
@@ -275,6 +283,10 @@ client.on('message', msg => {
 				break;
 			case "ban":
 				// Ban a user.
+				if (msg.content.replace(command, '').trim() == "") {
+					msg.channel.send("You know, it'd be nice if you *actually told me who to ban*...");
+					return;
+				}
 				user = msg.mentions.users.first();
 				if (hasRole(msg.member, config.roles.commander)) {
 					// They are authorised.
@@ -317,7 +329,11 @@ client.on('message', msg => {
 				break;
 			case "kick":
 				// Kick a user.
-				const member = msg.mentions.members.first();
+				if (msg.content.replace(command, '').trim() == "") {
+					msg.channel.send("You know, it'd be nice if you *actually told me who to kick*...");
+					return;
+				}
+				member = msg.mentions.members.first();
 				if (hasRole(msg.member, config.roles.commander)) {
 					// They are authorised.
 					member.kick(`Kicked by ${msg.author.username}, using SmartBot.`);
