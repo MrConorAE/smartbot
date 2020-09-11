@@ -244,7 +244,7 @@ client.on('message', msg => {
 						color: config.colors.success,
 						author: {
 							name: "Bulk Delete Successful",
-							icon_url: "https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
+							icon_url: "./icons/bulk_clear.png"
 						},
 						title: "Messages Cleared!",
 						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
