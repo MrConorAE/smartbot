@@ -53,7 +53,7 @@ client.on('ready', () => {
 			description: (`Version: ${config.ver}.`),
 			timestamp: new Date(),
 			footer: {
-				icon_url: client.user.avatarURL(),
+				icon_url: "",
 				text: "Automated message."
 			}
 		}
@@ -132,7 +132,7 @@ client.on('message', msg => {
 						],
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					}
@@ -170,7 +170,7 @@ client.on('message', msg => {
 						],
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					}
@@ -207,7 +207,7 @@ client.on('message', msg => {
 						],
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					}
@@ -227,7 +227,7 @@ client.on('message', msg => {
 						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					}
@@ -250,7 +250,7 @@ client.on('message', msg => {
 						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -267,7 +267,7 @@ client.on('message', msg => {
 						description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -292,7 +292,7 @@ client.on('message', msg => {
 						description: msg.author.username + " banned " + user.username + ".",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -309,7 +309,7 @@ client.on('message', msg => {
 						description: msg.author.username + " attempted to ban " + user.username + ".",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -332,7 +332,7 @@ client.on('message', msg => {
 						description: msg.author.username + " kicked " + member.user.username + ".",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -349,7 +349,7 @@ client.on('message', msg => {
 						description: msg.author.username + " attempted to kick " + member.user.username + ".",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -405,7 +405,7 @@ client.on('message', msg => {
 						description: msg.author.username + " requested a restart.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -423,7 +423,7 @@ client.on('message', msg => {
 						description: msg.author.username + " attempted to request a restart.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -442,7 +442,7 @@ client.on('message', msg => {
 						description: msg.author.username + " requested a reconnection.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -462,7 +462,7 @@ client.on('message', msg => {
 						description: msg.author.username + " attempted to request a reconnection.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -481,7 +481,7 @@ client.on('message', msg => {
 						description: msg.author.username + " requested a shutdown.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -501,7 +501,7 @@ client.on('message', msg => {
 						description: msg.author.username + " attempted to request a shutdown.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL(),
+							icon_url: "",
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -523,7 +523,7 @@ client.on('message', msg => {
 			description: ("**Error details:** " + e),
 			timestamp: new Date(),
 			footer: {
-				icon_url: client.user.avatarURL(),
+				icon_url: "",
 				text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 			}
 		});
@@ -544,7 +544,7 @@ process.on('unhandledRejection', error => function () {
 		description: ("**Error details:** " + error),
 		timestamp: new Date(),
 		footer: {
-			icon_url: client.user.avatarURL(),
+			icon_url: "",
 			text: "Automated message."
 		}
 	});
