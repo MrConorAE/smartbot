@@ -283,7 +283,7 @@ client.on('message', msg => {
 				break;
 			case "ban":
 				// Ban a user.
-				if (msg.content.replace(config.prefix + command, '').trim() == "") {
+				if (msg.content.replace(config.prefix + command, '').trim() == "" || msg.mentions.users.size == 0) {
 					msg.channel.send("You know, it'd be nice if you *actually told me who to ban*...");
 					return;
 				}
@@ -329,7 +329,7 @@ client.on('message', msg => {
 				break;
 			case "kick":
 				// Kick a user.
-				if (msg.content.replace(config.prefix + command, '').trim() == "") {
+				if (msg.content.replace(config.prefix + command, '').trim() == "" || msg.mentions.users.size == 0) {
 					msg.channel.send("You know, it'd be nice if you *actually told me who to kick*...");
 					return;
 				}
