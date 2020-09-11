@@ -214,7 +214,7 @@ client.on('message', msg => {
 				});
 				break;
 			case "suggest":
-				suggestion = msg.content.replace(command, '').trim();
+				suggestion = msg.content.replace(config.prefix + command, '').trim();
 				suggestionChannel = client.channels.cache.get(config.channels.videos);
 				if (suggestion == "") {
 					msg.channel.send("You know, it'd be nice if you *actually suggested something*...");
@@ -239,7 +239,7 @@ client.on('message', msg => {
 				break;
 			case "clear":
 				// Clear messages in a channel.
-				num = msg.content.replace(command, '').trim(); // Get the amount of messages to clear.
+				num = msg.content.replace(config.prefix + command, '').trim(); // Get the amount of messages to clear.
 				if (num == "" || num < 1) {
 					msg.channel.send("You know, it'd be nice if you *actually told me how many to clear*...");
 					return;
@@ -283,7 +283,7 @@ client.on('message', msg => {
 				break;
 			case "ban":
 				// Ban a user.
-				if (msg.content.replace(command, '').trim() == "") {
+				if (msg.content.replace(config.prefix + command, '').trim() == "") {
 					msg.channel.send("You know, it'd be nice if you *actually told me who to ban*...");
 					return;
 				}
@@ -329,7 +329,7 @@ client.on('message', msg => {
 				break;
 			case "kick":
 				// Kick a user.
-				if (msg.content.replace(command, '').trim() == "") {
+				if (msg.content.replace(config.prefix + command, '').trim() == "") {
 					msg.channel.send("You know, it'd be nice if you *actually told me who to kick*...");
 					return;
 				}
