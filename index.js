@@ -243,7 +243,7 @@ client.on('message', msg => {
 					log({
 						color: 0x03c129,
 						author: {
-							name: " ",
+							name: "Done!",
 							icon_url: "https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
 						},
 						title: "Messages Cleared",
