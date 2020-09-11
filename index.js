@@ -46,14 +46,14 @@ client.on('ready', () => {
 		embed: {
 			color: 0x03c129,
 			author: {
-				name: client.user.username,
-				icon_url: client.user.avatarURL
+				name: "",
+				icon_url: client.user.avatarURL()
 			},
 			title: "Connected!",
 			description: (`Version: ${config.ver} (use %changelog to see what's new)`),
 			timestamp: new Date(),
 			footer: {
-				icon_url: client.user.avatarURL,
+				icon_url: client.user.avatarURL(),
 				text: "Automated message."
 			}
 		}
@@ -68,7 +68,6 @@ client.on('message', msg => {
 		// We have to check if it's an Easter egg FIRST, because the switch/case breaks.
 		if (msg.content === "ping") {
 			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
-			msg.channel.send("*" + client.ping + "ms*");
 		} else if (msg.content.toLowerCase().includes("bad bot") || msg.content.toLowerCase().includes("bad smartbot")) {
 			if (randInt(0, 2) == 1) {
 				msg.channel.send("You will die tonight.");
@@ -113,8 +112,8 @@ client.on('message', msg => {
 					embed: {
 						color: 0x03b8c1,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Statistics",
 						description: "Statistics since the last restart.",
@@ -127,17 +126,13 @@ client.on('message', msg => {
 								value: commands
 							},
 							{
-								name: "Ping",
-								value: client.ping
-							},
-							{
 								name: "Uptime",
 								value: days + "d " + hours + "h " + minutes + "m " + seconds + "s"
 							}
 						],
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					}
@@ -151,8 +146,8 @@ client.on('message', msg => {
 					embed: {
 						color: 0x03b8c1,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Help",
 						description: "Here's a list of commands. Some of these require the Bot Commander role.\n\nKey: <...> = argument, (1/2/3/...) = options, @user = mention, [argument] = optional argument",
@@ -175,7 +170,7 @@ client.on('message', msg => {
 						],
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					}
@@ -188,8 +183,8 @@ client.on('message', msg => {
 					embed: {
 						color: 0x03b8c1,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Changelog for version " + config.ver,
 						description: "Here's the changelog for the last update, telling you what's new, different or removed.",
@@ -212,7 +207,27 @@ client.on('message', msg => {
 						],
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					}
+				});
+				break;
+			case "suggest":
+				suggestion = msg.content.replace(command, '').trim();
+				suggestionChannel = client.channels.cache.get(config.channels.videos);
+				suggestionChannel.send({
+					embed: {
+						color: 0x03c129,
+						author: {
+							name: msg.author.username,
+							icon_url: msg.author.avatarURL()
+						},
+						title: "Messages Cleared",
+						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					}
@@ -228,14 +243,14 @@ client.on('message', msg => {
 					log({
 						color: 0x03c129,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Messages Cleared",
 						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -245,14 +260,14 @@ client.on('message', msg => {
 					log({
 						color: 0xe0e812,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Permission Denied",
 						description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -270,14 +285,14 @@ client.on('message', msg => {
 					log({
 						color: 0x03c129,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "User Banned",
 						description: msg.author.username + " banned " + user.username + ".",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -287,14 +302,14 @@ client.on('message', msg => {
 					log({
 						color: 0xe0e812,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Permission Denied",
 						description: msg.author.username + " attempted to ban " + user.username + ".",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -310,14 +325,14 @@ client.on('message', msg => {
 					log({
 						color: 0x03c129,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "User Kicked",
 						description: msg.author.username + " kicked " + member.user.username + ".",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -327,14 +342,14 @@ client.on('message', msg => {
 					log({
 						color: 0xe0e812,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Permission Denied",
 						description: msg.author.username + " attempted to kick " + member.user.username + ".",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -383,14 +398,14 @@ client.on('message', msg => {
 					log({
 						color: 0x03c129,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Restarting...",
 						description: msg.author.username + " requested a restart.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -401,14 +416,14 @@ client.on('message', msg => {
 					log({
 						color: 0xe0e812,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Permission Denied",
 						description: msg.author.username + " attempted to request a restart.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -420,14 +435,14 @@ client.on('message', msg => {
 					log({
 						color: 0x03c129,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
-						title: "Restarting...",
+						title: "Reconnecting...",
 						description: msg.author.username + " requested a reconnection.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -440,14 +455,14 @@ client.on('message', msg => {
 					log({
 						color: 0xe0e812,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Permission Denied",
 						description: msg.author.username + " attempted to request a reconnection.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -459,14 +474,14 @@ client.on('message', msg => {
 					log({
 						color: 0x03c129,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Shutting down...",
 						description: msg.author.username + " requested a shutdown.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -479,14 +494,14 @@ client.on('message', msg => {
 					log({
 						color: 0xe0e812,
 						author: {
-							name: client.user.username,
-							icon_url: client.user.avatarURL
+							name: "",
+							icon_url: client.user.avatarURL()
 						},
 						title: "Permission Denied",
 						description: msg.author.username + " attempted to request a shutdown.",
 						timestamp: new Date(),
 						footer: {
-							icon_url: client.user.avatarURL,
+							icon_url: client.user.avatarURL(),
 							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
 					});
@@ -501,14 +516,14 @@ client.on('message', msg => {
 		log({
 			color: 0xd40000,
 			author: {
-				name: client.user.username,
-				icon_url: client.user.avatarURL
+				name: "",
+				icon_url: client.user.avatarURL()
 			},
 			title: "Error!",
 			description: ("**Error details:** " + e),
 			timestamp: new Date(),
 			footer: {
-				icon_url: client.user.avatarURL,
+				icon_url: client.user.avatarURL(),
 				text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 			}
 		});
@@ -522,14 +537,14 @@ process.on('unhandledRejection', error => function () {
 	log({
 		color: 0xd40000,
 		author: {
-			name: client.user.username,
-			icon_url: client.user.avatarURL
+			name: "",
+			icon_url: client.user.avatarURL()
 		},
 		title: "Unhandled Promise Rejection",
 		description: ("**Error details:** " + error),
 		timestamp: new Date(),
 		footer: {
-			icon_url: client.user.avatarURL,
+			icon_url: client.user.avatarURL(),
 			text: "Automated message"
 		}
 	});
