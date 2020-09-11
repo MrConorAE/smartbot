@@ -22,5 +22,11 @@
 		"reee": "https://www.youtube.com/watch?v=ptXsXrMs5No",
 		"rickroll": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 	},
+	"colors": {
+		"error": "cf1a1a",
+		"warning": "e58a00",
+		"success": "1aa514",
+		"info": "1793ba"
+	},
 	"ver": "0.1.0"
 }

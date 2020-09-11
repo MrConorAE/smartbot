@@ -44,13 +44,13 @@ client.on('ready', () => {
 	});
 	ch.send({
 		embed: {
-			color: 0x03c129,
+			color: config.colors.success,
 			author: {
-				name: "",
+				name: "Online",
 				icon_url: client.user.avatarURL()
 			},
 			title: "Connected!",
-			description: (`Version: ${config.ver} (use %changelog to see what's new)`),
+			description: (`Version: ${config.ver}.`),
 			timestamp: new Date(),
 			footer: {
 				icon_url: client.user.avatarURL(),
@@ -110,23 +110,23 @@ client.on('message', msg => {
 				commands = commands + 1;
 				msg.channel.send({
 					embed: {
-						color: 0x03b8c1,
+						color: config.colors.info,
 						author: {
-							name: "",
+							name: "Statistics",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Statistics",
+						title: "Server Statistics",
 						description: "Statistics since the last restart.",
 						fields: [{
-								name: "Messages",
+								name: "Messages Sent",
 								value: messages
 							},
 							{
-								name: "Commands",
+								name: "Commands Run",
 								value: commands
 							},
 							{
-								name: "Uptime",
+								name: "Bot Uptime",
 								value: days + "d " + hours + "h " + minutes + "m " + seconds + "s"
 							}
 						],
@@ -144,12 +144,12 @@ client.on('message', msg => {
 				msg.channel.send("beep boop here is help");
 				msg.channel.send({
 					embed: {
-						color: 0x03b8c1,
+						color: config.colors.info,
 						author: {
-							name: "",
+							name: "Help",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Help",
+						title: "Command List",
 						description: "Here's a list of commands. Some of these require the Bot Commander role.\n\nKey: <...> = argument, (1/2/3/...) = options, @user = mention, [argument] = optional argument",
 						fields: [{
 								name: "General",
@@ -181,12 +181,12 @@ client.on('message', msg => {
 				commands = commands + 1;
 				msg.channel.send({
 					embed: {
-						color: 0x03b8c1,
+						color: config.colors.info,
 						author: {
-							name: "",
+							name: "Changelog",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Changelog for version " + config.ver,
+						title: "Changelog for v" + config.ver,
 						description: "Here's the changelog for the last update, telling you what's new, different or removed.",
 						fields: [{
 								name: "New",
@@ -218,12 +218,12 @@ client.on('message', msg => {
 				suggestionChannel = client.channels.cache.get(config.channels.videos);
 				suggestionChannel.send({
 					embed: {
-						color: 0x03c129,
+						color: config.colors.info,
 						author: {
 							name: msg.author.username,
 							icon_url: msg.author.avatarURL()
 						},
-						title: "Messages Cleared",
+						title: "Messages cleared!",
 						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
 						timestamp: new Date(),
 						footer: {
@@ -241,12 +241,12 @@ client.on('message', msg => {
 					msg.channel.bulkDelete(Number(num) + 1);
 					msg.channel.send("Foof! " + num + " messages are now no more.");
 					log({
-						color: 0x03c129,
+						color: config.colors.success,
 						author: {
-							name: "Done!",
+							name: "Bulk Delete Successful",
 							icon_url: "https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
 						},
-						title: "Messages Cleared",
+						title: "Messages Cleared!",
 						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
 						timestamp: new Date(),
 						footer: {
@@ -258,12 +258,12 @@ client.on('message', msg => {
 					// They are not authorised.
 					msg.channel.send("No.");
 					log({
-						color: 0xe0e812,
+						color: config.colors.warning,
 						author: {
-							name: "",
+							name: "Permission Denied",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Permission Denied",
+						title: "Bulk Delete denied.",
 						description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
 						timestamp: new Date(),
 						footer: {
@@ -283,12 +283,12 @@ client.on('message', msg => {
 					});
 					msg.channel.send("Hippity hoppity, " + user.username + " is banned from this property.");
 					log({
-						color: 0x03c129,
+						color: config.colors.success,
 						author: {
-							name: "",
+							name: "Ban Successful",
 							icon_url: client.user.avatarURL()
 						},
-						title: "User Banned",
+						title: "User banned!",
 						description: msg.author.username + " banned " + user.username + ".",
 						timestamp: new Date(),
 						footer: {
@@ -300,12 +300,12 @@ client.on('message', msg => {
 					// They are not authorised.
 					msg.channel.send("No.");
 					log({
-						color: 0xe0e812,
+						color: config.colors.warning,
 						author: {
-							name: "",
+							name: "Permission Denied",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Permission Denied",
+						title: "Ban denied.",
 						description: msg.author.username + " attempted to ban " + user.username + ".",
 						timestamp: new Date(),
 						footer: {
@@ -323,12 +323,12 @@ client.on('message', msg => {
 					member.kick(`Kicked by ${msg.author.username}, using SmartBot.`);
 					msg.channel.send("Yeet! " + member.user.username + " is kicked.");
 					log({
-						color: 0x03c129,
+						color: config.colors.success,
 						author: {
-							name: "",
+							name: "Kick Successful",
 							icon_url: client.user.avatarURL()
 						},
-						title: "User Kicked",
+						title: "User kicked!",
 						description: msg.author.username + " kicked " + member.user.username + ".",
 						timestamp: new Date(),
 						footer: {
@@ -340,12 +340,12 @@ client.on('message', msg => {
 					// They are not authorised.
 					msg.channel.send("No.");
 					log({
-						color: 0xe0e812,
+						color: config.colors.warning,
 						author: {
-							name: "",
+							name: "Permission Denied",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Permission Denied",
+						title: "Kick denied.",
 						description: msg.author.username + " attempted to kick " + member.user.username + ".",
 						timestamp: new Date(),
 						footer: {
@@ -396,9 +396,9 @@ client.on('message', msg => {
 				if (msg.author.id === "491026695244087316") {
 					msg.channel.send("Wheeee! Let's get reincarnated by PM2!");
 					log({
-						color: 0x03c129,
+						color: config.colors.info,
 						author: {
-							name: "",
+							name: "Restarting",
 							icon_url: client.user.avatarURL()
 						},
 						title: "Restarting...",
@@ -414,12 +414,12 @@ client.on('message', msg => {
 					// They are not authorised.
 					msg.channel.send("No.");
 					log({
-						color: 0xe0e812,
+						color: config.colors.warning,
 						author: {
-							name: "",
+							name: "Permission Denied",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Permission Denied",
+						title: "Restart denied.",
 						description: msg.author.username + " attempted to request a restart.",
 						timestamp: new Date(),
 						footer: {
@@ -433,12 +433,12 @@ client.on('message', msg => {
 				if (msg.author.id === "491026695244087316") {
 					msg.channel.send("'Turn it off and on again', they said...");
 					log({
-						color: 0x03c129,
+						color: config.colors.info,
 						author: {
-							name: "",
+							name: "Reconnecting",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Reconnecting...",
+						title: "Reconnecting to Discord...",
 						description: msg.author.username + " requested a reconnection.",
 						timestamp: new Date(),
 						footer: {
@@ -453,12 +453,12 @@ client.on('message', msg => {
 					// They are not authorised.
 					msg.channel.send("No.");
 					log({
-						color: 0xe0e812,
+						color: config.colors.warning,
 						author: {
-							name: "",
+							name: "Permission Denied",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Permission Denied",
+						title: "Reconnection denied.",
 						description: msg.author.username + " attempted to request a reconnection.",
 						timestamp: new Date(),
 						footer: {
@@ -472,12 +472,12 @@ client.on('message', msg => {
 				if (msg.author.id === "491026695244087316") {
 					msg.channel.send("Right, off to kill myself.");
 					log({
-						color: 0x03c129,
+						color: config.colors.error,
 						author: {
-							name: "",
+							name: "Shutting Down",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Shutting down...",
+						title: "Shutting down bot...",
 						description: msg.author.username + " requested a shutdown.",
 						timestamp: new Date(),
 						footer: {
@@ -492,12 +492,12 @@ client.on('message', msg => {
 					// They are not authorised.
 					msg.channel.send("No.");
 					log({
-						color: 0xe0e812,
+						color: config.colors.warning,
 						author: {
-							name: "",
+							name: "Permission Denied",
 							icon_url: client.user.avatarURL()
 						},
-						title: "Permission Denied",
+						title: "Shutdown denied",
 						description: msg.author.username + " attempted to request a shutdown.",
 						timestamp: new Date(),
 						footer: {
@@ -514,12 +514,12 @@ client.on('message', msg => {
 			sentMessage.react('👏');
 		});
 		log({
-			color: 0xd40000,
+			color: config.colors.error,
 			author: {
-				name: "",
+				name: "Error",
 				icon_url: client.user.avatarURL()
 			},
-			title: "Error!",
+			title: "Exception Thrown",
 			description: ("**Error details:** " + e),
 			timestamp: new Date(),
 			footer: {
@@ -535,9 +535,9 @@ process.on('unhandledRejection', error => function () {
 	ch.send("Welp, Unhandled Promise Rejection. Please contact MrConorAE.");
 	console.error('Uncaught Promise Rejection', error);
 	log({
-		color: 0xd40000,
+		color: config.colors.error,
 		author: {
-			name: "",
+			name: "Error",
 			icon_url: client.user.avatarURL()
 		},
 		title: "Unhandled Promise Rejection",
@@ -545,7 +545,7 @@ process.on('unhandledRejection', error => function () {
 		timestamp: new Date(),
 		footer: {
 			icon_url: client.user.avatarURL(),
-			text: "Automated message"
+			text: "Automated message."
 		}
 	});
 });
