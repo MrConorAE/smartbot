@@ -66,7 +66,7 @@ client.on('message', msg => {
 		//#region
 		// EASTER EGGS BEGIN HERE
 		// We have to check if it's an Easter egg FIRST, because the switch/case breaks.
-		if (msg.content === "ping") {
+		if (msg.content.toLowerCase() === "ping") {
 			msg.channel.send("Pong (☞ﾟヮﾟ)☞");
 		} else if (msg.content.toLowerCase().includes("bad bot") || msg.content.toLowerCase().includes("bad smartbot")) {
 			if (randInt(0, 2) == 1) {
