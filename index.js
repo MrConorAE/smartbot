@@ -166,6 +166,10 @@ client.on('message', msg => {
 							{
 								name: "Easter Eggs",
 								value: "SmartBot also has hidden Easter eggs! Try to find them all."
+							},
+							{
+								name: "Support Server",
+								value: "Found a bug? Want to learn about bot development?\nJoin the Bot Emporium server!\nhttps://discord.gg/DuAXWXv"
 							}
 						],
 						timestamp: new Date(),
@@ -408,6 +412,9 @@ client.on('message', msg => {
 				});
 				break;
 				// USEFUL COMMANDS
+			case "support":
+				msg.channel.send("Support server: https://discord.gg/DuAXWXv");
+				break;
 			case "restart":
 				if (msg.author.id === "491026695244087316") {
 					msg.channel.send("Wheeee! Let's get reincarnated by PM2!");
@@ -526,7 +533,7 @@ client.on('message', msg => {
 		}
 		//#endregion
 	} catch (e) {
-		msg.channel.send("You broke something. Well done. Please contact MrConorAE.").then(sentMessage => {
+		msg.channel.send("You broke something. Well done. Please report this in the support server (`%support`)!").then(sentMessage => {
 			sentMessage.react('👏');
 		});
 		log({
@@ -536,7 +543,15 @@ client.on('message', msg => {
 				icon_url: "https://i.ibb.co/GMfJcN5/error.png"
 			},
 			title: "Exception Thrown",
-			description: ("**Error details:** " + e),
+			fields: [{
+					name: "Error Details:",
+					value: e
+				},
+				{
+					name: "Please report this error in the support server:",
+					value: "https://discord.gg/DuAXWXv"
+				}
+			],
 			timestamp: new Date(),
 			footer: {
 				icon_url: "",
@@ -548,7 +563,7 @@ client.on('message', msg => {
 
 process.on('unhandledRejection', error => function () {
 	ch = client.channels.cache.get(config.channels.general);
-	ch.send("Welp, Unhandled Promise Rejection. Please contact MrConorAE.");
+	ch.send("Welp, Unhandled Promise Rejection. Please report this in the support server (`%support`)!");
 	console.error('Uncaught Promise Rejection', error);
 	log({
 		color: config.colors.error,
@@ -557,7 +572,15 @@ process.on('unhandledRejection', error => function () {
 			icon_url: "https://i.ibb.co/GMfJcN5/error.png"
 		},
 		title: "Unhandled Promise Rejection",
-		description: ("**Error details:** " + error),
+		fields: [{
+				name: "Error Details:",
+				value: error
+			},
+			{
+				name: "Please report this error in the support server:",
+				value: "https://discord.gg/DuAXWXv"
+			}
+		],
 		timestamp: new Date(),
 		footer: {
 			icon_url: "",
