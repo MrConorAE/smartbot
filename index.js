@@ -238,6 +238,9 @@ client.on('message', msg => {
 							text: "by " + msg.author.username
 						}
 					}
+				}).then(sentEmbed => {
+					sentEmbed.react("👍");
+					sentEmbed.react("👎");
 				});
 				break;
 			case "clear":
