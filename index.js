@@ -67,6 +67,9 @@ client.on('message', msg => {
 		// SPECIFIC CHANNEL EXCEPTIONS BEGIN HERE
 		// This section is for things like the video-ideas channel.
 		if (msg.channel.id == config.channels.videos) {
+			if (msg.author.bot) {
+				return;
+			}
 			msg.delete();
 			if (msg.content.startsWith("%suggest ")) {
 				suggestion = msg.content.replace("%suggest ", '').trim();
@@ -95,6 +98,7 @@ client.on('message', msg => {
 				sentEmbed.react("👍");
 				sentEmbed.react("👎");
 			});
+			return;
 		}
 		//#endregion
 		//#region
