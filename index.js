@@ -228,15 +228,14 @@ client.on('message', msg => {
 					embed: {
 						color: config.colors.info,
 						author: {
-							name: msg.author.username,
-							icon_url: msg.author.avatarURL()
+							name: "Video Suggestion",
+							icon_url: "https://i.ibb.co/VBcP7Z0/video.png"
 						},
-						title: "Messages cleared!",
-						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
+						title: suggestion,
 						timestamp: new Date(),
 						footer: {
 							icon_url: "",
-							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+							text: "by " + msg.author.username
 						}
 					}
 				});
