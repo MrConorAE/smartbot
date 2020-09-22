@@ -5,6 +5,9 @@ const client = new Discord.Client();
 const config = require("./config.json");
 const ytdl = require('ytdl-core');
 var opus = require('opusscript');
+const {
+	PassThrough
+} = require('stream');
 
 var messages = 0;
 var commands = 0;
@@ -66,16 +69,14 @@ client.on('message', msg => {
 		//#region
 		// SPECIFIC CHANNEL EXCEPTIONS BEGIN HERE
 		// This section is for things like the video-ideas channel.
-		if (msg.channel.id == config.channels.videos) {
+		if (msg.content.startsWith("%")) {
+			// do nothing, the command handler below will take care of it
+		} else if (msg.channel.id == config.channels.videos) {
 			if (msg.author.bot) {
 				return;
 			}
 			msg.delete();
-			if (msg.content.startsWith("%")) {
-				return;
-			} else {
-				suggestion = msg.content;
-			}
+			suggestion = msg.content;
 			suggestionChannel = client.channels.cache.get(config.channels.videos);
 			if (suggestion == "") {
 				return;
