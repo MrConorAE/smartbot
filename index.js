@@ -258,321 +258,322 @@ client.on('message', msg => {
 						}
 					});
 				}
-				case "suggest":
-					suggestion = msg.content.replace(config.prefix + command, '').trim();
-					suggestionChannel = client.channels.cache.get(config.channels.videos);
-					if (suggestion == "") {
-						msg.channel.send("You know, it'd be nice if you *actually suggested something*...");
-						return;
-					}
-					suggestionChannel.send({
-						embed: {
-							color: config.colors.info,
-							author: {
-								name: "Video Suggestion",
-								icon_url: "https://i.ibb.co/VBcP7Z0/video.png"
-							},
-							title: suggestion,
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "by " + msg.author.username
-							}
+				break;
+			case "suggest":
+				suggestion = msg.content.replace(config.prefix + command, '').trim();
+				suggestionChannel = client.channels.cache.get(config.channels.videos);
+				if (suggestion == "") {
+					msg.channel.send("You know, it'd be nice if you *actually suggested something*...");
+					return;
+				}
+				suggestionChannel.send({
+					embed: {
+						color: config.colors.info,
+						author: {
+							name: "Video Suggestion",
+							icon_url: "https://i.ibb.co/VBcP7Z0/video.png"
+						},
+						title: suggestion,
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "by " + msg.author.username
 						}
-					}).then(sentEmbed => {
-						sentEmbed.react("👍");
-						sentEmbed.react("👎");
+					}
+				}).then(sentEmbed => {
+					sentEmbed.react("👍");
+					sentEmbed.react("👎");
+				});
+				break;
+			case "clear":
+				// Clear messages in a channel.
+				num = msg.content.replace(config.prefix + command, '').trim(); // Get the amount of messages to clear.
+				if (num == "" || parseInt(num) < 1 || isNaN(parseInt(num))) {
+					msg.channel.send("You know, it'd be nice if you *actually told me how many to clear*...");
+					return;
+				}
+				if (hasRole(msg.member, config.roles.commander)) {
+					// They are authorised.
+					msg.channel.bulkDelete(Number(num) + 1);
+					msg.channel.send("Foof! " + num + " messages are now no more.");
+					log({
+						color: config.colors.success,
+						author: {
+							name: "Bulk Delete Successful",
+							icon_url: "https://i.ibb.co/DrPgS1T/bulk-clear.png"
+						},
+						title: "Messages Cleared!",
+						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
 					});
-					break;
-				case "clear":
-					// Clear messages in a channel.
-					num = msg.content.replace(config.prefix + command, '').trim(); // Get the amount of messages to clear.
-					if (num == "" || parseInt(num) < 1 || isNaN(parseInt(num))) {
-						msg.channel.send("You know, it'd be nice if you *actually told me how many to clear*...");
-						return;
-					}
-					if (hasRole(msg.member, config.roles.commander)) {
-						// They are authorised.
-						msg.channel.bulkDelete(Number(num) + 1);
-						msg.channel.send("Foof! " + num + " messages are now no more.");
-						log({
-							color: config.colors.success,
-							author: {
-								name: "Bulk Delete Successful",
-								icon_url: "https://i.ibb.co/DrPgS1T/bulk-clear.png"
-							},
-							title: "Messages Cleared!",
-							description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
-						});
-					} else {
-						// They are not authorised.
-						msg.channel.send("No.");
-						log({
-							color: config.colors.warning,
-							author: {
-								name: "Permission Denied",
-								icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
-							},
-							title: "Bulk Delete denied.",
-							description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
-						});
-					}
-					break;
-				case "ban":
-					// Ban a user.
-					if (msg.content.replace(config.prefix + command, '').trim() == "" || msg.mentions.users.size == 0) {
-						msg.channel.send("You know, it'd be nice if you *actually told me who to ban*...");
-						return;
-					}
-					user = msg.mentions.users.first();
-					if (hasRole(msg.member, config.roles.commander)) {
-						// They are authorised.
-						msg.guild.members.ban(user, {
-							reason: `Banned by ${msg.author.username}, using SmartBot.`
-						});
-						msg.channel.send("Hippity hoppity, " + user.username + " is banned from this property.");
-						log({
-							color: config.colors.success,
-							author: {
-								name: "Ban Successful",
-								icon_url: "https://i.ibb.co/x3BrRKs/ban.png"
-							},
-							title: "User banned!",
-							description: msg.author.username + " banned " + user.username + ".",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
-						});
-					} else {
-						// They are not authorised.
-						msg.channel.send("No.");
-						log({
-							color: config.colors.warning,
-							author: {
-								name: "Permission Denied",
-								icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
-							},
-							title: "Ban denied.",
-							description: msg.author.username + " attempted to ban " + user.username + ".",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
-						});
-					}
-					break;
-				case "kick":
-					// Kick a user.
-					if (msg.content.replace(config.prefix + command, '').trim() == "" || msg.mentions.users.size == 0) {
-						msg.channel.send("You know, it'd be nice if you *actually told me who to kick*...");
-						return;
-					}
-					member = msg.mentions.members.first();
-					if (hasRole(msg.member, config.roles.commander)) {
-						// They are authorised.
-						member.kick(`Kicked by ${msg.author.username}, using SmartBot.`);
-						msg.channel.send("Yeet! " + member.user.username + " is kicked.");
-						log({
-							color: config.colors.success,
-							author: {
-								name: "Kick Successful",
-								icon_url: "https://i.ibb.co/CKHyTwT/kick.png"
-							},
-							title: "User kicked!",
-							description: msg.author.username + " kicked " + member.user.username + ".",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
-						});
-					} else {
-						// They are not authorised.
-						msg.channel.send("No.");
-						log({
-							color: config.colors.warning,
-							author: {
-								name: "Permission Denied",
-								icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
-							},
-							title: "Kick denied.",
-							description: msg.author.username + " attempted to kick " + member.user.username + ".",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
-						});
-					}
-					break;
-				case "voice":
-					if (msg.channel.type !== 'text') return;
-
-					const voiceChannel = msg.member.voice.channel;
-
-					if (!voiceChannel) {
-						return msg.channel.send('Join a voice channel first, dum dum.');
-					}
-
-					voiceChannel.join().then(connection => {
-						stream = undefined;
-						/*if (randInt(0, 1) == 0) {
-							stream = ytdl(config.audio.inhale, {
-								filter: 'audioonly'
-							});
-						} else {
-							stream = ytdl(config.audio.throat, {
-								filter: 'audioonly'
-							});
+				} else {
+					// They are not authorised.
+					msg.channel.send("No.");
+					log({
+						color: config.colors.warning,
+						author: {
+							name: "Permission Denied",
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
+						},
+						title: "Bulk Delete denied.",
+						description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
 						}
-						dispatcher = connection.play(stream);
-						dispatcher.on('end', () => function () {*/
-						if (randInt(0, 1) == 0) {
-							stream = ytdl(config.audio.reee, {
-								filter: 'audioonly'
-							});
-						} else {
-							stream = ytdl(config.audio.rickroll, {
-								filter: 'audioonly'
-							});
-						}
-						dispatcher = connection.play(stream);
-						dispatcher.on('end', () => connection.disconnect());
-						//});
 					});
-					break;
-					// USEFUL COMMANDS
-				case "support":
-					msg.channel.send("Support server: https://discord.gg/DuAXWXv");
-					break;
-				case "restart":
-					if (msg.author.id === "491026695244087316") {
-						msg.channel.send("Wheeee! Let's get reincarnated by PM2!");
-						log({
-							color: config.colors.info,
-							author: {
-								name: "Restarting",
-								icon_url: "https://i.ibb.co/556TBgw/reload.png"
-							},
-							title: "Restarting...",
-							description: msg.author.username + " requested a restart.",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
+				}
+				break;
+			case "ban":
+				// Ban a user.
+				if (msg.content.replace(config.prefix + command, '').trim() == "" || msg.mentions.users.size == 0) {
+					msg.channel.send("You know, it'd be nice if you *actually told me who to ban*...");
+					return;
+				}
+				user = msg.mentions.users.first();
+				if (hasRole(msg.member, config.roles.commander)) {
+					// They are authorised.
+					msg.guild.members.ban(user, {
+						reason: `Banned by ${msg.author.username}, using SmartBot.`
+					});
+					msg.channel.send("Hippity hoppity, " + user.username + " is banned from this property.");
+					log({
+						color: config.colors.success,
+						author: {
+							name: "Ban Successful",
+							icon_url: "https://i.ibb.co/x3BrRKs/ban.png"
+						},
+						title: "User banned!",
+						description: msg.author.username + " banned " + user.username + ".",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				} else {
+					// They are not authorised.
+					msg.channel.send("No.");
+					log({
+						color: config.colors.warning,
+						author: {
+							name: "Permission Denied",
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
+						},
+						title: "Ban denied.",
+						description: msg.author.username + " attempted to ban " + user.username + ".",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				}
+				break;
+			case "kick":
+				// Kick a user.
+				if (msg.content.replace(config.prefix + command, '').trim() == "" || msg.mentions.users.size == 0) {
+					msg.channel.send("You know, it'd be nice if you *actually told me who to kick*...");
+					return;
+				}
+				member = msg.mentions.members.first();
+				if (hasRole(msg.member, config.roles.commander)) {
+					// They are authorised.
+					member.kick(`Kicked by ${msg.author.username}, using SmartBot.`);
+					msg.channel.send("Yeet! " + member.user.username + " is kicked.");
+					log({
+						color: config.colors.success,
+						author: {
+							name: "Kick Successful",
+							icon_url: "https://i.ibb.co/CKHyTwT/kick.png"
+						},
+						title: "User kicked!",
+						description: msg.author.username + " kicked " + member.user.username + ".",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				} else {
+					// They are not authorised.
+					msg.channel.send("No.");
+					log({
+						color: config.colors.warning,
+						author: {
+							name: "Permission Denied",
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
+						},
+						title: "Kick denied.",
+						description: msg.author.username + " attempted to kick " + member.user.username + ".",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				}
+				break;
+			case "voice":
+				if (msg.channel.type !== 'text') return;
+
+				const voiceChannel = msg.member.voice.channel;
+
+				if (!voiceChannel) {
+					return msg.channel.send('Join a voice channel first, dum dum.');
+				}
+
+				voiceChannel.join().then(connection => {
+					stream = undefined;
+					/*if (randInt(0, 1) == 0) {
+						stream = ytdl(config.audio.inhale, {
+							filter: 'audioonly'
 						});
-						process.exit();
 					} else {
-						// They are not authorised.
-						msg.channel.send("No.");
-						log({
-							color: config.colors.warning,
-							author: {
-								name: "Permission Denied",
-								icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
-							},
-							title: "Restart denied.",
-							description: msg.author.username + " attempted to request a restart.",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
+						stream = ytdl(config.audio.throat, {
+							filter: 'audioonly'
 						});
 					}
-					break;
-				case "reconnect":
-					if (msg.author.id === "491026695244087316") {
-						msg.channel.send("'Turn it off and on again', they said...");
-						log({
-							color: config.colors.info,
-							author: {
-								name: "Reconnecting",
-								icon_url: "https://i.ibb.co/556TBgw/reload.png"
-							},
-							title: "Reconnecting to Discord...",
-							description: msg.author.username + " requested a reconnection.",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
-						});
-						client.destroy().then(() => {
-							client.login('token');
+					dispatcher = connection.play(stream);
+					dispatcher.on('end', () => function () {*/
+					if (randInt(0, 1) == 0) {
+						stream = ytdl(config.audio.reee, {
+							filter: 'audioonly'
 						});
 					} else {
-						// They are not authorised.
-						msg.channel.send("No.");
-						log({
-							color: config.colors.warning,
-							author: {
-								name: "Permission Denied",
-								icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
-							},
-							title: "Reconnection denied.",
-							description: msg.author.username + " attempted to request a reconnection.",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
+						stream = ytdl(config.audio.rickroll, {
+							filter: 'audioonly'
 						});
 					}
-					break;
-				case "shutdown":
-					if (msg.author.id === "491026695244087316") {
-						msg.channel.send("Right, off to kill myself.");
-						log({
-							color: config.colors.error,
-							author: {
-								name: "Shutting Down",
-								icon_url: "https://i.ibb.co/GxXH2Wm/shutdown.png"
-							},
-							title: "Shutting down bot...",
-							description: msg.author.username + " requested a shutdown.",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
-						});
-						client.destroy().then(() => {
-							client.login('token');
-						});
-					} else {
-						// They are not authorised.
-						msg.channel.send("No.");
-						log({
-							color: config.colors.warning,
-							author: {
-								name: "Permission Denied",
-								icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
-							},
-							title: "Shutdown denied",
-							description: msg.author.username + " attempted to request a shutdown.",
-							timestamp: new Date(),
-							footer: {
-								icon_url: "",
-								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-							}
-						});
-					}
-					break;
+					dispatcher = connection.play(stream);
+					dispatcher.on('end', () => connection.disconnect());
+					//});
+				});
+				break;
+				// USEFUL COMMANDS
+			case "support":
+				msg.channel.send("Support server: https://discord.gg/DuAXWXv");
+				break;
+			case "restart":
+				if (msg.author.id === "491026695244087316") {
+					msg.channel.send("Wheeee! Let's get reincarnated by PM2!");
+					log({
+						color: config.colors.info,
+						author: {
+							name: "Restarting",
+							icon_url: "https://i.ibb.co/556TBgw/reload.png"
+						},
+						title: "Restarting...",
+						description: msg.author.username + " requested a restart.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+					process.exit();
+				} else {
+					// They are not authorised.
+					msg.channel.send("No.");
+					log({
+						color: config.colors.warning,
+						author: {
+							name: "Permission Denied",
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
+						},
+						title: "Restart denied.",
+						description: msg.author.username + " attempted to request a restart.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				}
+				break;
+			case "reconnect":
+				if (msg.author.id === "491026695244087316") {
+					msg.channel.send("'Turn it off and on again', they said...");
+					log({
+						color: config.colors.info,
+						author: {
+							name: "Reconnecting",
+							icon_url: "https://i.ibb.co/556TBgw/reload.png"
+						},
+						title: "Reconnecting to Discord...",
+						description: msg.author.username + " requested a reconnection.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+					client.destroy().then(() => {
+						client.login('token');
+					});
+				} else {
+					// They are not authorised.
+					msg.channel.send("No.");
+					log({
+						color: config.colors.warning,
+						author: {
+							name: "Permission Denied",
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
+						},
+						title: "Reconnection denied.",
+						description: msg.author.username + " attempted to request a reconnection.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				}
+				break;
+			case "shutdown":
+				if (msg.author.id === "491026695244087316") {
+					msg.channel.send("Right, off to kill myself.");
+					log({
+						color: config.colors.error,
+						author: {
+							name: "Shutting Down",
+							icon_url: "https://i.ibb.co/GxXH2Wm/shutdown.png"
+						},
+						title: "Shutting down bot...",
+						description: msg.author.username + " requested a shutdown.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+					client.destroy().then(() => {
+						client.login('token');
+					});
+				} else {
+					// They are not authorised.
+					msg.channel.send("No.");
+					log({
+						color: config.colors.warning,
+						author: {
+							name: "Permission Denied",
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
+						},
+						title: "Shutdown denied",
+						description: msg.author.username + " attempted to request a shutdown.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				}
+				break;
 		}
 		//#endregion
 		//#region
