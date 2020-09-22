@@ -64,6 +64,45 @@ client.on('message', msg => {
 	try {
 		messages = messages + 1; // Add one to the messages count.
 		//#region
+		// SPECIFIC CHANNEL EXCEPTIONS BEGIN HERE
+		// This section is for things like the video-ideas channel.
+		if (msg.channel.id == config.channels.videos) {
+			if (msg.author.bot) {
+				return;
+			}
+			msg.delete();
+			if (msg.content.startsWith("%")) {
+				return;
+			} else {
+				suggestion = msg.content;
+			}
+			suggestionChannel = client.channels.cache.get(config.channels.videos);
+			if (suggestion == "") {
+				return;
+			}
+			suggestionChannel.send({
+				embed: {
+					color: config.colors.info,
+					author: {
+						name: "Video Suggestion",
+						icon_url: "https://i.ibb.co/VBcP7Z0/video.png"
+					},
+					title: suggestion,
+					timestamp: new Date(),
+					footer: {
+						icon_url: "",
+						text: "by " + msg.author.username
+					}
+				}
+			}).then(sentEmbed => {
+				sentEmbed.react("👍");
+				sentEmbed.react("👎");
+				sentEmbed.react("⛔");
+			});
+			return;
+		}
+		//#endregion
+		//#region
 		// EASTER EGGS BEGIN HERE
 		// We have to check if it's an Easter egg FIRST, because the switch/case breaks.
 		if (msg.content.toLowerCase() === "ping") {
@@ -575,45 +614,6 @@ client.on('message', msg => {
 					});
 				}
 				break;
-		}
-		//#endregion
-		//#region
-		// SPECIFIC CHANNEL EXCEPTIONS BEGIN HERE
-		// This section is for things like the video-ideas channel.
-		if (msg.channel.id == config.channels.videos) {
-			if (msg.author.bot) {
-				return;
-			}
-			msg.delete();
-			if (msg.content.startsWith("%suggest ")) {
-				suggestion = msg.content.replace("%suggest ", '').trim();
-			} else {
-				suggestion = msg.content;
-			}
-			suggestionChannel = client.channels.cache.get(config.channels.videos);
-			if (suggestion == "") {
-				return;
-			}
-			suggestionChannel.send({
-				embed: {
-					color: config.colors.info,
-					author: {
-						name: "Video Suggestion",
-						icon_url: "https://i.ibb.co/VBcP7Z0/video.png"
-					},
-					title: suggestion,
-					timestamp: new Date(),
-					footer: {
-						icon_url: "",
-						text: "by " + msg.author.username
-					}
-				}
-			}).then(sentEmbed => {
-				sentEmbed.react("👍");
-				sentEmbed.react("👎");
-				sentEmbed.react("⛔");
-			});
-			return;
 		}
 		//#endregion
 	} catch (e) {
