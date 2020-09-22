@@ -283,6 +283,7 @@ client.on('message', msg => {
 				}).then(sentEmbed => {
 					sentEmbed.react("👍");
 					sentEmbed.react("👎");
+					sentEmbed.react("⛔");
 				});
 				break;
 			case "clear":
