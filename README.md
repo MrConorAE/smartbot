@@ -8,6 +8,7 @@ It's got all the features:
 - Fun
   - Done: loads of easter eggs
   - Coming soon: even more (o_o)
+- with even more coming soon!
 
 Best of all, it's now **open source**!
 
