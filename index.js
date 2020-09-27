@@ -3,6 +3,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require("./config.json");
+const secret = require("./token.json");
 const ytdl = require('ytdl-core');
 var opus = require('opusscript');
 const {
@@ -736,4 +737,4 @@ process.on('unhandledRejection', error => function () {
 	});
 });
 
-client.login(config.token);
+client.login(secret.token);
