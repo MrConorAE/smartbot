@@ -81,6 +81,7 @@ client.on('message', msg => {
 			if (suggestion == "") {
 				return;
 			}
+			suggestionSent = undefined;
 			suggestionChannel.send({
 				embed: {
 					color: config.colors.info,
@@ -98,7 +99,28 @@ client.on('message', msg => {
 			}).then(sentEmbed => {
 				sentEmbed.react("👍");
 				sentEmbed.react("👎");
+				sentEmbed.react("⛔");
+				suggestionSent = sentEmbed;
 			});
+			// Wait for "no_entry" reactions for deletion
+			let filter = (reaction, user) => {
+				return ['⛔'].includes(reaction.emoji.name);
+			};
+			message.awaitReactions(filter, {
+					max: 5,
+					time: 60000,
+					errors: ['time']
+				})
+				.then(collected => {
+					const reaction = collected.first();
+
+					if (reaction.emoji.name === '⛔') {
+						suggestionSent.delete();
+					}
+				})
+				.catch(collected => {
+					message.reactions.cache.get('⛔').remove().catch(error => log("Could not remove reaction (" + error + ")"));
+				});
 			return;
 		}
 		//#endregion
