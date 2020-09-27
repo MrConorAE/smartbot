@@ -70,7 +70,11 @@ client.on('message', msg => {
 		// SPECIFIC CHANNEL EXCEPTIONS BEGIN HERE
 		// This section is for things like the video-ideas channel.
 		if (msg.content.startsWith("%")) {
-			msg.reply("please only send suggestions in this channel!");
+			msg.reply("please only send suggestions in this channel!").then(sent => {
+				setTimeout(function () {
+					sent.delete();
+				}, 5000);
+			});
 			msg.delete();
 			return;
 		} else if (msg.channel.id == config.channels.videos) {
