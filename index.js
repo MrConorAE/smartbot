@@ -70,7 +70,9 @@ client.on('message', msg => {
 		// SPECIFIC CHANNEL EXCEPTIONS BEGIN HERE
 		// This section is for things like the video-ideas channel.
 		if (msg.content.startsWith("%")) {
-			// do nothing, the command handler below will take care of it
+			msg.reply(", please only send suggestions in this channel!");
+			msg.delete();
+			return;
 		} else if (msg.channel.id == config.channels.videos) {
 			if (msg.author.bot) {
 				return;
@@ -114,10 +116,45 @@ client.on('message', msg => {
 
 						if (reaction.emoji.name === '⛔') {
 							sentEmbed.delete();
+							log({
+								color: config.colors.success,
+								author: {
+									name: "Suggestion Deleted",
+									icon_url: "https://i.ibb.co/ThWryyQ/generic-success.png"
+								},
+								title: "Video suggestion removed!",
+								description: msg.author.username + "'s suggestion ('" + suggestion + "') was voted out.",
+								timestamp: new Date(),
+								footer: {
+									icon_url: "",
+									text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+								}
+							});
 						}
 					})
 					.catch(collected => {
-						sentEmbed.reactions.cache.get('⛔').remove().catch(error => log("Could not remove reaction (" + error + ")"));
+						sentEmbed.reactions.cache.get('⛔').remove().catch(error => log({
+							color: config.colors.error,
+							author: {
+								name: "Error",
+								icon_url: "https://i.ibb.co/GMfJcN5/error.png"
+							},
+							title: "Exception Thrown",
+							fields: [{
+									name: "Could not remove reaction:",
+									value: e
+								},
+								{
+									name: "Please report this error in the support server:",
+									value: "https://discord.gg/DuAXWXv"
+								}
+							],
+							timestamp: new Date(),
+							footer: {
+								icon_url: "",
+								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+							}
+						}));
 					});
 			});
 			return;
