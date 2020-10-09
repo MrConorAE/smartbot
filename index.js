@@ -72,13 +72,19 @@ client.on('message', msg => {
 		// This section is for things like the video-ideas channel.
 		if (msg.channel.id == config.channels.videos) {
 			if (msg.content.startsWith("%")) {
-				msg.reply("please only send suggestions in this channel!").then(sent => {
-					setTimeout(function () {
-						sent.delete();
-					}, 5000);
-				});
-				msg.delete();
-				return;
+				if (!hasRole(msg.member, config.roles.commander)) {
+					// This is the super-secret exemption (shh!)
+					// Anyone with Bot Admin roles can BYPASS the auto-conversion system by prefixing their message with a '%'.
+					msg.reply("please only send suggestions in this channel!").then(sent => {
+						setTimeout(function () {
+							sent.delete();
+						}, 5000);
+					});
+					msg.delete();
+					return;
+				} else {
+					return;
+				}
 			}
 			if (msg.author.bot) {
 				return;
@@ -113,8 +119,8 @@ client.on('message', msg => {
 					return ['⛔'].includes(reaction.emoji.name);
 				};
 				sentEmbed.awaitReactions(filter, {
-						max: 5,
-						time: 60000,
+						max: 3,
+						time: 120000,
 						errors: ['time']
 					})
 					.then(collected => {
