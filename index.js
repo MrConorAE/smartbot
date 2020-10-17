@@ -564,7 +564,7 @@ client.on('message', msg => {
 							filter: 'audioonly'
 						});
 					} else if (args[0] == "running") {
-						stream = ytdl(config.audio.thomas, {
+						stream = ytdl(config.audio.running, {
 							filter: 'audioonly'
 						});
 					}
