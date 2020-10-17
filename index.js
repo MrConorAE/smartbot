@@ -540,6 +540,7 @@ client.on('message', msg => {
 
 				voiceChannel.join().then(connection => {
 					stream = undefined;
+					arg = msg.content.replace(config.prefix + command, '').trim();
 					/*if (randInt(0, 1) == 0) {
 						stream = ytdl(config.audio.inhale, {
 							filter: 'audioonly'
@@ -551,20 +552,28 @@ client.on('message', msg => {
 					}
 					dispatcher = connection.play(stream);
 					dispatcher.on('end', () => function () {*/
-					if (args[0] == "ree") {
+					if (arg == "ree") {
 						stream = ytdl(config.audio.reee, {
 							filter: 'audioonly'
 						});
-					} else if (args[0] == "rickroll") {
+					} else if (arg == "rickroll") {
 						stream = ytdl(config.audio.rickroll, {
 							filter: 'audioonly'
 						});
-					} else if (args[0] == "thomas") {
+					} else if (arg == "thomas") {
 						stream = ytdl(config.audio.thomas, {
 							filter: 'audioonly'
 						});
-					} else if (args[0] == "running") {
+					} else if (arg == "running") {
 						stream = ytdl(config.audio.running, {
+							filter: 'audioonly'
+						});
+					} else if (arg == "gas") {
+						stream = ytdl(config.audio.gas, {
+							filter: 'audioonly'
+						});
+					} else if (arg == "rasputin") {
+						stream = ytdl(config.audio.rasputin, {
 							filter: 'audioonly'
 						});
 					}
