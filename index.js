@@ -576,6 +576,30 @@ client.on('message', msg => {
 						stream = ytdl(config.audio.rasputin, {
 							filter: 'audioonly'
 						});
+					} else if (arg == "gear") {
+						stream = ytdl(config.audio.gear, {
+							filter: 'audioonly'
+						});
+					} else if (arg == "sounds") {
+						stream = ytdl(config.audio.sounds, {
+							filter: 'audioonly'
+						});
+					} else if (arg == "call") {
+						stream = ytdl(config.audio.call, {
+							filter: 'audioonly'
+						});
+					} else if (arg == "callremix") {
+						stream = ytdl(config.audio.callremix, {
+							filter: 'audioonly'
+						});
+					} else if (arg == "trailer") {
+						stream = ytdl(config.audio.trailer, {
+							filter: 'audioonly'
+						});
+					} else if (arg == "uuua") {
+						stream = ytdl(config.audio.uuua, {
+							filter: 'audioonly'
+						});
 					}
 					dispatcher = connection.play(stream);
 					dispatcher.on('end', () => connection.disconnect());
