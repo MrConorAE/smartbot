@@ -600,12 +600,15 @@ client.on('message', msg => {
 						stream = ytdl(config.audio.uuua, {
 							filter: 'audioonly'
 						});
+					} else if (arg == "leave") {
+						voiceChannel.leave();
+						msg.channel.send(":( bye");
 					} else {
 						msg.channel.send("Not a valid sound. Available sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua.");
 						return;
 					}
 					dispatcher = connection.play(stream);
-					dispatcher.on('end', () => connection.disconnect());
+					dispatcher.on('end', () => voiceChannel.leave());
 					//});
 				});
 				break;
