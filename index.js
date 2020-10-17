@@ -529,10 +529,10 @@ client.on('message', msg => {
 					});
 				}
 				break;
-			case "voice":
+			case "reee":
 				if (msg.channel.type !== 'text') return;
 
-				const voiceChannel = msg.member.voice.channel;
+				let voiceChannel = msg.member.voice.channel;
 
 				if (!voiceChannel) {
 					return msg.channel.send('Join a voice channel first, dum dum.');
@@ -551,15 +551,39 @@ client.on('message', msg => {
 					}
 					dispatcher = connection.play(stream);
 					dispatcher.on('end', () => function () {*/
-					if (randInt(0, 1) == 0) {
-						stream = ytdl(config.audio.reee, {
+					stream = ytdl(config.audio.reee, {
+						filter: 'audioonly'
+					});
+					dispatcher = connection.play(stream);
+					dispatcher.on('end', () => connection.disconnect());
+					//});
+				});
+				break;
+			case "rickroll":
+				if (msg.channel.type !== 'text') return;
+
+				let voiceChannel = msg.member.voice.channel;
+
+				if (!voiceChannel) {
+					return msg.channel.send('Join a voice channel first, dum dum.');
+				}
+
+				voiceChannel.join().then(connection => {
+					stream = undefined;
+					/*if (randInt(0, 1) == 0) {
+						stream = ytdl(config.audio.inhale, {
 							filter: 'audioonly'
 						});
 					} else {
-						stream = ytdl(config.audio.rickroll, {
+						stream = ytdl(config.audio.throat, {
 							filter: 'audioonly'
 						});
 					}
+					dispatcher = connection.play(stream);
+					dispatcher.on('end', () => function () {*/
+					stream = ytdl(config.audio.rickroll, {
+						filter: 'audioonly'
+					});
 					dispatcher = connection.play(stream);
 					dispatcher.on('end', () => connection.disconnect());
 					//});
