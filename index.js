@@ -529,7 +529,7 @@ client.on('message', msg => {
 					});
 				}
 				break;
-			case "reee":
+			case "voice":
 				if (msg.channel.type !== 'text') return;
 
 				var voiceChannel = msg.member.voice.channel;
@@ -551,39 +551,23 @@ client.on('message', msg => {
 					}
 					dispatcher = connection.play(stream);
 					dispatcher.on('end', () => function () {*/
-					stream = ytdl(config.audio.reee, {
-						filter: 'audioonly'
-					});
-					dispatcher = connection.play(stream);
-					dispatcher.on('end', () => connection.disconnect());
-					//});
-				});
-				break;
-			case "rickroll":
-				if (msg.channel.type !== 'text') return;
-
-				var channel = msg.member.voice.channel;
-
-				if (!channel) {
-					return msg.channel.send('Join a voice channel first, dum dum.');
-				}
-
-				channel.join().then(connection => {
-					stream = undefined;
-					/*if (randInt(0, 1) == 0) {
-						stream = ytdl(config.audio.inhale, {
+					if (args[0] == "ree") {
+						stream = ytdl(config.audio.reee, {
 							filter: 'audioonly'
 						});
-					} else {
-						stream = ytdl(config.audio.throat, {
+					} else if (args[0] == "rickroll") {
+						stream = ytdl(config.audio.rickroll, {
+							filter: 'audioonly'
+						});
+					} else if (args[0] == "thomas") {
+						stream = ytdl(config.audio.thomas, {
+							filter: 'audioonly'
+						});
+					} else if (args[0] == "running") {
+						stream = ytdl(config.audio.thomas, {
 							filter: 'audioonly'
 						});
 					}
-					dispatcher = connection.play(stream);
-					dispatcher.on('end', () => function () {*/
-					stream = ytdl(config.audio.rickroll, {
-						filter: 'audioonly'
-					});
 					dispatcher = connection.play(stream);
 					dispatcher.on('end', () => connection.disconnect());
 					//});
