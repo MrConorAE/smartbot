@@ -532,7 +532,7 @@ client.on('message', msg => {
 			case "reee":
 				if (msg.channel.type !== 'text') return;
 
-				let voiceChannel = msg.member.voice.channel;
+				var voiceChannel = msg.member.voice.channel;
 
 				if (!voiceChannel) {
 					return msg.channel.send('Join a voice channel first, dum dum.');
@@ -562,13 +562,13 @@ client.on('message', msg => {
 			case "rickroll":
 				if (msg.channel.type !== 'text') return;
 
-				let voiceChannel = msg.member.voice.channel;
+				var channel = msg.member.voice.channel;
 
-				if (!voiceChannel) {
+				if (!channel) {
 					return msg.channel.send('Join a voice channel first, dum dum.');
 				}
 
-				voiceChannel.join().then(connection => {
+				channel.join().then(connection => {
 					stream = undefined;
 					/*if (randInt(0, 1) == 0) {
 						stream = ytdl(config.audio.inhale, {
