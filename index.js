@@ -612,7 +612,7 @@ client.on('message', msg => {
 						voiceChannel.leave();
 						msg.channel.send(":( bye");
 						return;
-					} else if (arg.startsWith("http")) {
+					} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
 						stream = ytdl(arg, {
 							filter: 'audioonly'
 						});
