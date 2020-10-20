@@ -600,9 +600,18 @@ client.on('message', msg => {
 						stream = ytdl(config.audio.uuua, {
 							filter: 'audioonly'
 						});
+					} else if (arg == "countdown") {
+						stream = ytdl(config.audio.countdown, {
+							filter: 'audioonly'
+						});
 					} else if (arg == "leave") {
 						voiceChannel.leave();
 						msg.channel.send(":( bye");
+						return;
+					} else if (arg.startsWith("http")) {
+						stream = ytdl(arg, {
+							filter: 'audioonly'
+						});
 					} else {
 						msg.channel.send("Not a valid sound. Available sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua.");
 						return;
