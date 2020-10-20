@@ -16,8 +16,6 @@
 		"videos": "706010085263933440"
 	},
 	"audio": {
-		"inhale": "https://www.youtube.com/watch?v=-_B-Bbyzfco",
-		"throat": "https://www.youtube.com/watch?v=f1IT2y_l_zc",
 		"reee": "https://www.youtube.com/watch?v=ptXsXrMs5No",
 		"rickroll": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
 		"thomas": "https://www.youtube.com/watch?v=GnrwM7vFn_U",
@@ -39,5 +37,5 @@
 		"success": "1aa514",
 		"info": "1793ba"
 	},
-	"ver": "0.1.6"
+	"ver": "0.1.8"
 }

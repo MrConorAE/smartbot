@@ -259,22 +259,22 @@ client.on('message', msg => {
 							icon_url: "https://i.ibb.co/0s5M7LX/help.png"
 						},
 						title: "Command List",
-						description: "Here's a list of commands. Some of these require the Bot Commander role.\n\nKey: <...> = argument, (1/2/3/...) = options, @user = mention, [argument] = optional argument",
+						description: "Here's a list of commands. Some of these require the Bot Commander role.\n\nKey: <...> = argument, (1/2/3/...) = options, @user = mention, [argument] = optional argument\nItems in ~~strikethrough~~ are not implemented yet.",
 						fields: [{
 								name: "General",
 								value: "%stat, %help, %changelog"
 							},
 							{
 								name: "Moderation",
-								value: "%clear <n>, %kick <@user>, %ban <@user>\n%mute <@user>, %tempmute <hh:mm> <@user>, %unmute <@user>"
+								value: "%clear <n>, %kick <@user>, %ban <@user>\n%~~mute <@user>~~, ~~%tempmute <hh:mm> <@user>~~, ~~%unmute <@user>~~"
 							},
 							{
 								name: "Tools",
-								value: "%mood <type (w/s/l/p)> <text>, %list <(admins)>, %poll <(b/2/5)> <text>"
+								value: "~~%mood <type (w/s/l/p)> <text>~~, ~~%list <(admins)>~~, ~~%poll <(b/2/5)> <text>~~, %voice <(name/YouTube link/'leave')>"
 							},
 							{
 								name: "Easter Eggs",
-								value: "SmartBot also has hidden Easter eggs! Try to find them all."
+								value: "SmartBot also has a bunch of hidden Easter eggs! Try to find them all."
 							},
 							{
 								name: "Support Server",
@@ -303,15 +303,15 @@ client.on('message', msg => {
 						description: "Here's the changelog for the last update, telling you what's new, different or removed.",
 						fields: [{
 								name: "New",
-								value: "Everything. Just check %help."
+								value: "- You can now play any YouTube video by sending the link!\n- Make the bot leave a voice channel immediately by typing `%voice leave`.\n- You can also pause or play the current audio by typing `%voice pause` and `%voice resume`."
 							},
 							{
 								name: "Changed",
-								value: "--"
+								value: "- Added more audio files to the `%voice` command."
 							},
 							{
 								name: "Removed",
-								value: "--"
+								value: "Nothing in this release."
 							},
 							{
 								name: "Complaints? Suggestions? Bugs?",
@@ -535,11 +535,11 @@ client.on('message', msg => {
 				var voiceChannel = msg.member.voice.channel;
 
 				if (!voiceChannel) {
-					return msg.channel.send('Join a voice channel first, dum dum.');
+					return msg.channel.send('join a voice channel first, dum dum');
 				}
 
 				voiceChannel.join().then(connection => {
-					stream = undefined;
+					var stream;
 					arg = msg.content.replace(config.prefix + command, '').trim();
 					/*if (randInt(0, 1) == 0) {
 						stream = ytdl(config.audio.inhale, {
@@ -552,74 +552,67 @@ client.on('message', msg => {
 					}
 					dispatcher = connection.play(stream);
 					dispatcher.on('end', () => function () {*/
+					var selected;
+					var dispatcher;
 					if (arg == "ree") {
-						stream = ytdl(config.audio.reee, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.reee;
 					} else if (arg == "rickroll") {
-						stream = ytdl(config.audio.rickroll, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.rickroll;
 					} else if (arg == "thomas") {
-						stream = ytdl(config.audio.thomas, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.thomas;
 					} else if (arg == "running") {
-						stream = ytdl(config.audio.running, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.running;
 					} else if (arg == "gas") {
-						stream = ytdl(config.audio.gas, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.gas;
 					} else if (arg == "rasputin") {
-						stream = ytdl(config.audio.rasputin, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.rasputin;
 					} else if (arg == "gear") {
-						stream = ytdl(config.audio.gear, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.gear;
 					} else if (arg == "sounds") {
-						stream = ytdl(config.audio.sounds, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.sounds;
 					} else if (arg == "call") {
-						stream = ytdl(config.audio.call, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.call;
 					} else if (arg == "callremix") {
-						stream = ytdl(config.audio.callremix, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.callremix;
 					} else if (arg == "trailer") {
-						stream = ytdl(config.audio.trailer, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.trailer;
 					} else if (arg == "uuua") {
-						stream = ytdl(config.audio.uuua, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.uuua;
 					} else if (arg == "countdown") {
-						stream = ytdl(config.audio.countdown, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.countdown;
 					} else if (arg == "ymca") {
-						stream = ytdl(config.audio.ymca, {
-							filter: 'audioonly'
-						});
+						selected = config.audio.ymca;
+					} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
+						selected = arg;
 					} else if (arg == "leave") {
 						voiceChannel.leave();
 						msg.channel.send(":( bye");
 						return;
-					} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
-						stream = ytdl(arg, {
-							filter: 'audioonly'
-						});
+					}
+					// Special cases: control commands
+					else if (arg == "pause") {
+						if (dispatcher && !dispatcher.paused) {
+							msg.channel.send("righty ho, pausing");
+							dispatcher.pause();
+						} else {
+							msg.channel.send("there's nothing playing to pause, dum dum");
+						}
+						return;
+					} else if (arg == "resume") {
+						if (dispatcher && dispatcher.paused) {
+							msg.channel.send("righty ho, resuming");
+							dispatcher.pause();
+						} else {
+							msg.channel.send("there's nothing paused to resume, dum dum");
+						}
+						return;
 					} else {
-						msg.channel.send("Not a valid sound. Available sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca - or send a YouTube link!");
+						msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca - or send a YouTube link!");
 						return;
 					}
+					stream = ytdl(selected, {
+						filter: 'audioonly'
+					});
 					dispatcher = connection.play(stream);
 					dispatcher.on('end', () => voiceChannel.leave());
 					//});
