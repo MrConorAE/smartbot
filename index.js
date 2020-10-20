@@ -585,7 +585,12 @@ client.on('message', msg => {
 					} else if (arg == "ymca") {
 						selected = config.audio.ymca;
 					} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
+						if (arg == "https://www.youtube.com/watch?v=zQawXvCd-fs") {
+							msg.channel.send("no, not again");
+							return;
+						}
 						selected = arg;
+						arg = "the video";
 					} else if (arg == "leave") {
 						voiceChannel.leave();
 						msg.channel.send(":( bye");
@@ -611,7 +616,7 @@ client.on('message', msg => {
 					} else if (arg.startsWith("record")) {
 						if (hasRole(msg.member, config.roles.commander)) {
 							// Create a ReadableStream of s16le PCM audio
-							audio = connection.receiver.createStream(msg.mentions.members.first, {
+							audio = connection.receiver.createStream(msg.mentions.members.first(), {
 								mode: 'pcm',
 								end: 'manual'
 							});
