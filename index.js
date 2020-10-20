@@ -5,6 +5,7 @@ const client = new Discord.Client();
 const config = require("./config.json");
 const secret = require("./token.json");
 const ytdl = require('ytdl-core');
+const fs = require('fs');
 var opus = require('opusscript');
 const {
 	PassThrough
@@ -270,7 +271,7 @@ client.on('message', msg => {
 							},
 							{
 								name: "Tools",
-								value: "~~%mood <type (w/s/l/p)> <text>~~, ~~%list <(admins)>~~, ~~%poll <(b/2/5)> <text>~~, %voice <(name/YouTube link/'leave')>"
+								value: "~~%mood <type (w/s/l/p)> <text>~~, ~~%list <(admins)>~~, ~~%poll <(b/2/5)> <text>~~, %voice <(name/YouTube link/leave/pause/resume)>"
 							},
 							{
 								name: "Easter Eggs",
@@ -554,6 +555,7 @@ client.on('message', msg => {
 					dispatcher.on('end', () => function () {*/
 					var selected;
 					var dispatcher;
+					var audio;
 					if (arg == "ree") {
 						selected = config.audio.reee;
 					} else if (arg == "rickroll") {
@@ -606,14 +608,42 @@ client.on('message', msg => {
 							msg.channel.send("there's nothing paused to resume, dum dum");
 						}
 						return;
+					} else if (arg.startsWith("record")) {
+						if (hasRole(msg.member, config.roles.commander)) {
+							// Create a ReadableStream of s16le PCM audio
+							audio = connection.receiver.createStream(msg.mentions.first(), {
+								mode: 'pcm',
+								end: 'manual'
+							});
+							audio.pipe(fs.createWriteStream('user_audio'));
+						} else {
+							msg.channel.send("No.");
+						}
+					} else if (arg == "stoprecord") {
+						if (hasRole(msg.member, config.roles.commander)) {
+							// Destroy the ReadableStream
+							audio.destroy();
+						} else {
+							msg.channel.send("No.");
+						}
+					} else if (arg == "playrecord") {
+						if (hasRole(msg.member, config.roles.commander)) {
+							dispatcher = connection.play(audio, {
+								type: 'opus'
+							});
+						} else {
+							msg.channel.send("No.");
+						}
 					} else {
 						msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca - or send a YouTube link!");
 						return;
 					}
-					stream = ytdl(selected, {
-						filter: 'audioonly'
-					});
-					dispatcher = connection.play(stream);
+					if (selected) {
+						stream = ytdl(selected, {
+							filter: 'audioonly'
+						});
+						dispatcher = connection.play(stream);
+					}
 					dispatcher.on('end', () => voiceChannel.leave());
 					//});
 				});
