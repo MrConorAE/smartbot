@@ -611,11 +611,12 @@ client.on('message', msg => {
 					} else if (arg.startsWith("record")) {
 						if (hasRole(msg.member, config.roles.commander)) {
 							// Create a ReadableStream of s16le PCM audio
-							audio = connection.receiver.createStream(msg.mentions.first(), {
+							audio = connection.receiver.createStream(msg.mentions, {
 								mode: 'pcm',
 								end: 'manual'
 							});
 							audio.pipe(fs.createWriteStream('user_audio'));
+							msg.channel.send("ok, started");
 						} else {
 							msg.channel.send("No.");
 						}
@@ -623,6 +624,7 @@ client.on('message', msg => {
 						if (hasRole(msg.member, config.roles.commander)) {
 							// Destroy the ReadableStream
 							audio.destroy();
+							msg.channel.send("ok, stopped");
 						} else {
 							msg.channel.send("No.");
 						}
@@ -631,6 +633,7 @@ client.on('message', msg => {
 							dispatcher = connection.play(audio, {
 								type: 'opus'
 							});
+							msg.channel.send("ok, playing");
 						} else {
 							msg.channel.send("No.");
 						}
@@ -643,6 +646,7 @@ client.on('message', msg => {
 							filter: 'audioonly'
 						});
 						dispatcher = connection.play(stream);
+						msg.channel.send("ok, playing " + arg);
 					}
 					dispatcher.on('end', () => voiceChannel.leave());
 					//});
