@@ -611,7 +611,7 @@ client.on('message', msg => {
 					} else if (arg.startsWith("record")) {
 						if (hasRole(msg.member, config.roles.commander)) {
 							// Create a ReadableStream of s16le PCM audio
-							audio = connection.receiver.createStream(msg.mentions.first, {
+							audio = connection.receiver.createStream(msg.mentions.members.first, {
 								mode: 'pcm',
 								end: 'manual'
 							});
