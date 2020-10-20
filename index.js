@@ -584,6 +584,12 @@ client.on('message', msg => {
 						selected = config.audio.countdown;
 					} else if (arg == "ymca") {
 						selected = config.audio.ymca;
+					} else if (arg == "distract") {
+						selected = config.audio.distract;
+					} else if (arg == "mii") {
+						selected = config.audio.mii;
+					} else if (arg == "spin") {
+						selected = config.audio.spin;
 					} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
 						if (arg == "https://www.youtube.com/watch?v=zQawXvCd-fs") {
 							msg.channel.send("no, not again");

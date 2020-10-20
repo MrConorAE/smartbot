@@ -29,7 +29,10 @@
 		"trailer": "https://www.youtube.com/watch?v=V8E02WPWFtk",
 		"uuua": "https://www.youtube.com/watch?v=OLIKiwVR4a0",
 		"countdown": "https://www.youtube.com/watch?v=9jK-NcRmVcw",
-		"ymca": "https://www.youtube.com/watch?v=CS9OO0S5w2k"
+		"ymca": "https://www.youtube.com/watch?v=CS9OO0S5w2k",
+		"distract": "https://www.youtube.com/watch?v=6XK4S8OQPuU",
+		"mii": "https://www.youtube.com/watch?v=Um4OQ6KP1m4",
+		"spin": "https://www.youtube.com/watch?v=QnABC0b1gCI"
 	},
 	"colors": {
 		"error": "cf1a1a",
@@ -37,5 +40,5 @@
 		"success": "1aa514",
 		"info": "1793ba"
 	},
-	"ver": "0.1.8"
+	"ver": "0.1.9"
 }
