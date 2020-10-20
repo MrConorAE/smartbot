@@ -604,6 +604,10 @@ client.on('message', msg => {
 						stream = ytdl(config.audio.countdown, {
 							filter: 'audioonly'
 						});
+					} else if (arg == "ymca") {
+						stream = ytdl(config.audio.ymca, {
+							filter: 'audioonly'
+						});
 					} else if (arg == "leave") {
 						voiceChannel.leave();
 						msg.channel.send(":( bye");
