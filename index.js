@@ -617,7 +617,7 @@ client.on('message', msg => {
 							filter: 'audioonly'
 						});
 					} else {
-						msg.channel.send("Not a valid sound. Available sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua.");
+						msg.channel.send("Not a valid sound. Available sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca - or send a YouTube link!");
 						return;
 					}
 					dispatcher = connection.play(stream);
