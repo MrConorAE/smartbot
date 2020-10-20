@@ -649,7 +649,7 @@ client.on('message', msg => {
 							msg.channel.send("No.");
 						}
 					} else {
-						msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca - or send a YouTube link!");
+						msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin - or send a YouTube link!");
 						return;
 					}
 					if (selected) {
