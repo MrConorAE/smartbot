@@ -598,7 +598,7 @@ client.on('message', msg => {
 					}
 					// Special cases: control commands
 					else if (arg == "pause") {
-						if (dispatcher && !dispatcher.paused) {
+						if (!dispatcher.paused) {
 							msg.channel.send("righty ho, pausing");
 							dispatcher.pause();
 						} else {
@@ -606,7 +606,7 @@ client.on('message', msg => {
 						}
 						return;
 					} else if (arg == "resume") {
-						if (dispatcher && dispatcher.paused) {
+						if (dispatcher.paused) {
 							msg.channel.send("righty ho, resuming");
 							dispatcher.pause();
 						} else {
@@ -653,7 +653,6 @@ client.on('message', msg => {
 						dispatcher = connection.play(stream);
 						msg.channel.send("ok, playing " + arg);
 					}
-					dispatcher.on('end', () => voiceChannel.leave());
 					//});
 				});
 				break;
