@@ -16,6 +16,8 @@ var commands = 0;
 
 var exec = require('child_process').exec;
 
+var queue = [];
+
 function execute(command) {
 	exec(command, function (error, stdout, stderr) {
 		console.log(stdout);
@@ -530,6 +532,7 @@ client.on('message', msg => {
 					});
 				}
 				break;
+			case "v": //alias for "voice"
 			case "voice":
 				if (msg.channel.type !== 'text') return;
 
@@ -603,6 +606,7 @@ client.on('message', msg => {
 						return;
 					}
 					// Special cases: control commands
+					/*
 					else if (arg == "pause") {
 						if (!dispatcher.paused) {
 							msg.channel.send("righty ho, pausing");
@@ -619,7 +623,8 @@ client.on('message', msg => {
 							msg.channel.send("there's nothing paused to resume, dum dum");
 						}
 						return;
-					} else if (arg.startsWith("record")) {
+					} */
+					else if (arg.startsWith("record")) {
 						if (hasRole(msg.member, config.roles.commander)) {
 							// Create a ReadableStream of s16le PCM audio
 							audio = connection.receiver.createStream(msg.mentions.members.first(), {
@@ -657,7 +662,13 @@ client.on('message', msg => {
 							filter: 'audioonly'
 						});
 						dispatcher = connection.play(stream);
-						msg.channel.send("ok, playing " + arg);
+						loading = msg.channel.send("loading " + arg + ", hold on...\n(if this doesn't change, try again in a minute)");
+						dispatcher.on('start', () => function () {
+							loading.send("ok, playing " + arg);
+						});
+						dispatcher.on('error', () => function () {
+							loading.send("hmm, couldn't play " + arg + ". try again in a minute");
+						});
 					}
 					//});
 				});
