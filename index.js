@@ -3,7 +3,9 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require("./config.json");
+const secret = require("./token.json");
 const ytdl = require('ytdl-core');
+const fs = require('fs');
 var opus = require('opusscript');
 const {
 	PassThrough
@@ -69,9 +71,22 @@ client.on('message', msg => {
 		//#region
 		// SPECIFIC CHANNEL EXCEPTIONS BEGIN HERE
 		// This section is for things like the video-ideas channel.
-		if (msg.content.startsWith("%")) {
-			// do nothing, the command handler below will take care of it
-		} else if (msg.channel.id == config.channels.videos) {
+		if (msg.channel.id == config.channels.videos) {
+			if (msg.content.startsWith("%")) {
+				if (!hasRole(msg.member, config.roles.commander)) {
+					// This is the super-secret exemption (shh!)
+					// Anyone with Bot Admin roles can BYPASS the auto-conversion system by prefixing their message with a '%'.
+					msg.reply("please only send suggestions in this channel!").then(sent => {
+						setTimeout(function () {
+							sent.delete();
+						}, 5000);
+					});
+					msg.delete();
+					return;
+				} else {
+					return;
+				}
+			}
 			if (msg.author.bot) {
 				return;
 			}
@@ -100,27 +115,61 @@ client.on('message', msg => {
 				sentEmbed.react("👍");
 				sentEmbed.react("👎");
 				sentEmbed.react("⛔");
-				suggestionSent = sentEmbed;
-			});
-			// Wait for "no_entry" reactions for deletion
-			let filter = (reaction, user) => {
-				return ['⛔'].includes(reaction.emoji.name);
-			};
-			message.awaitReactions(filter, {
-					max: 5,
-					time: 60000,
-					errors: ['time']
-				})
-				.then(collected => {
-					const reaction = collected.first();
+				// Wait for "no_entry" reactions for deletion
+				let filter = (reaction, user) => {
+					return ['⛔'].includes(reaction.emoji.name);
+				};
+				sentEmbed.awaitReactions(filter, {
+						max: 3,
+						time: 120000,
+						errors: ['time']
+					})
+					.then(collected => {
+						const reaction = collected.first();
 
-					if (reaction.emoji.name === '⛔') {
-						suggestionSent.delete();
-					}
-				})
-				.catch(collected => {
-					message.reactions.cache.get('⛔').remove().catch(error => log("Could not remove reaction (" + error + ")"));
-				});
+						if (reaction.emoji.name === '⛔') {
+							sentEmbed.delete();
+							log({
+								color: config.colors.success,
+								author: {
+									name: "Suggestion Deleted",
+									icon_url: "https://i.ibb.co/ThWryyQ/generic-success.png"
+								},
+								title: "Video suggestion removed!",
+								description: msg.author.username + "'s suggestion ('" + suggestion + "') was voted out.",
+								timestamp: new Date(),
+								footer: {
+									icon_url: "",
+									text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+								}
+							});
+						}
+					})
+					.catch(collected => {
+						sentEmbed.reactions.cache.get('⛔').remove().catch(error => log({
+							color: config.colors.error,
+							author: {
+								name: "Error",
+								icon_url: "https://i.ibb.co/GMfJcN5/error.png"
+							},
+							title: "Exception Thrown",
+							fields: [{
+									name: "Could not remove reaction:",
+									value: e
+								},
+								{
+									name: "Please report this error in the support server:",
+									value: "https://discord.gg/DuAXWXv"
+								}
+							],
+							timestamp: new Date(),
+							footer: {
+								icon_url: "",
+								text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+							}
+						}));
+					});
+			});
 			return;
 		}
 		//#endregion
@@ -211,22 +260,22 @@ client.on('message', msg => {
 							icon_url: "https://i.ibb.co/0s5M7LX/help.png"
 						},
 						title: "Command List",
-						description: "Here's a list of commands. Some of these require the Bot Commander role.\n\nKey: <...> = argument, (1/2/3/...) = options, @user = mention, [argument] = optional argument",
+						description: "Here's a list of commands. Some of these require the Bot Commander role.\n\nKey: <...> = argument, (1/2/3/...) = options, @user = mention, [argument] = optional argument\nItems in ~~strikethrough~~ are not implemented yet.",
 						fields: [{
 								name: "General",
 								value: "%stat, %help, %changelog"
 							},
 							{
 								name: "Moderation",
-								value: "%clear <n>, %kick <@user>, %ban <@user>\n%mute <@user>, %tempmute <hh:mm> <@user>, %unmute <@user>"
+								value: "%clear <n>, %kick <@user>, %ban <@user>\n%~~mute <@user>~~, ~~%tempmute <hh:mm> <@user>~~, ~~%unmute <@user>~~"
 							},
 							{
 								name: "Tools",
-								value: "%mood <type (w/s/l/p)> <text>, %list <(admins)>, %poll <(b/2/5)> <text>"
+								value: "~~%mood <type (w/s/l/p)> <text>~~, ~~%list <(admins)>~~, ~~%poll <(b/2/5)> <text>~~, %voice <(name/YouTube link/leave/pause/resume)>"
 							},
 							{
 								name: "Easter Eggs",
-								value: "SmartBot also has hidden Easter eggs! Try to find them all."
+								value: "SmartBot also has a bunch of hidden Easter eggs! Try to find them all."
 							},
 							{
 								name: "Support Server",
@@ -255,15 +304,15 @@ client.on('message', msg => {
 						description: "Here's the changelog for the last update, telling you what's new, different or removed.",
 						fields: [{
 								name: "New",
-								value: "Everything. Just check %help."
+								value: "- You can now play any YouTube video by sending the link!\n- Make the bot leave a voice channel immediately by typing `%voice leave`.\n- You can also pause or play the current audio by typing `%voice pause` and `%voice resume`."
 							},
 							{
 								name: "Changed",
-								value: "--"
+								value: "- Added more audio files to the `%voice` command."
 							},
 							{
 								name: "Removed",
-								value: "--"
+								value: "Nothing in this release."
 							},
 							{
 								name: "Complaints? Suggestions? Bugs?",
@@ -484,14 +533,15 @@ client.on('message', msg => {
 			case "voice":
 				if (msg.channel.type !== 'text') return;
 
-				const voiceChannel = msg.member.voice.channel;
+				var voiceChannel = msg.member.voice.channel;
 
 				if (!voiceChannel) {
-					return msg.channel.send('Join a voice channel first, dum dum.');
+					return msg.channel.send('join a voice channel first, dum dum');
 				}
 
 				voiceChannel.join().then(connection => {
-					stream = undefined;
+					var stream;
+					arg = msg.content.replace(config.prefix + command, '').trim();
 					/*if (randInt(0, 1) == 0) {
 						stream = ytdl(config.audio.inhale, {
 							filter: 'audioonly'
@@ -503,17 +553,112 @@ client.on('message', msg => {
 					}
 					dispatcher = connection.play(stream);
 					dispatcher.on('end', () => function () {*/
-					if (randInt(0, 1) == 0) {
-						stream = ytdl(config.audio.reee, {
-							filter: 'audioonly'
-						});
-					} else {
-						stream = ytdl(config.audio.rickroll, {
-							filter: 'audioonly'
-						});
+					var selected;
+					var dispatcher;
+					var audio;
+					if (arg == "ree") {
+						selected = config.audio.reee;
+					} else if (arg == "rickroll") {
+						selected = config.audio.rickroll;
+					} else if (arg == "thomas") {
+						selected = config.audio.thomas;
+					} else if (arg == "running") {
+						selected = config.audio.running;
+					} else if (arg == "gas") {
+						selected = config.audio.gas;
+					} else if (arg == "rasputin") {
+						selected = config.audio.rasputin;
+					} else if (arg == "gear") {
+						selected = config.audio.gear;
+					} else if (arg == "sounds") {
+						selected = config.audio.sounds;
+					} else if (arg == "call") {
+						selected = config.audio.call;
+					} else if (arg == "callremix") {
+						selected = config.audio.callremix;
+					} else if (arg == "trailer") {
+						selected = config.audio.trailer;
+					} else if (arg == "uuua") {
+						selected = config.audio.uuua;
+					} else if (arg == "countdown") {
+						selected = config.audio.countdown;
+					} else if (arg == "ymca") {
+						selected = config.audio.ymca;
+					} else if (arg == "distract") {
+						selected = config.audio.distract;
+					} else if (arg == "mii") {
+						selected = config.audio.mii;
+					} else if (arg == "spin") {
+						selected = config.audio.spin;
+					} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
+						if (arg == "https://www.youtube.com/watch?v=zQawXvCd-fs") {
+							msg.channel.send("no, not again");
+							return;
+						}
+						selected = arg;
+						arg = "the video";
+					} else if (arg == "leave") {
+						voiceChannel.leave();
+						msg.channel.send(":( bye");
+						return;
 					}
-					dispatcher = connection.play(stream);
-					dispatcher.on('end', () => connection.disconnect());
+					// Special cases: control commands
+					else if (arg == "pause") {
+						if (!dispatcher.paused) {
+							msg.channel.send("righty ho, pausing");
+							dispatcher.pause();
+						} else {
+							msg.channel.send("there's nothing playing to pause, dum dum");
+						}
+						return;
+					} else if (arg == "resume") {
+						if (dispatcher.paused) {
+							msg.channel.send("righty ho, resuming");
+							dispatcher.pause();
+						} else {
+							msg.channel.send("there's nothing paused to resume, dum dum");
+						}
+						return;
+					} else if (arg.startsWith("record")) {
+						if (hasRole(msg.member, config.roles.commander)) {
+							// Create a ReadableStream of s16le PCM audio
+							audio = connection.receiver.createStream(msg.mentions.members.first(), {
+								mode: 'pcm',
+								end: 'manual'
+							});
+							audio.pipe(fs.createWriteStream('user_audio'));
+							msg.channel.send("ok, started");
+						} else {
+							msg.channel.send("No.");
+						}
+					} else if (arg == "stoprecord") {
+						if (hasRole(msg.member, config.roles.commander)) {
+							// Destroy the ReadableStream
+							audio.destroy();
+							msg.channel.send("ok, stopped");
+						} else {
+							msg.channel.send("No.");
+						}
+					} else if (arg == "playrecord") {
+						if (hasRole(msg.member, config.roles.commander)) {
+							dispatcher = connection.play(audio, {
+								type: 'opus'
+							});
+							msg.channel.send("ok, playing");
+						} else {
+							msg.channel.send("No.");
+						}
+					} else {
+						msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin - or send a YouTube link!");
+						return;
+					}
+					if (selected) {
+						stream = ytdl(selected, {
+							filter: 'audioonly'
+						});
+						dispatcher = connection.play(stream);
+						msg.channel.send("ok, playing " + arg);
+					}
 					//});
 				});
 				break;
@@ -695,4 +840,4 @@ process.on('unhandledRejection', error => function () {
 	});
 });
 
-client.login(config.token);
+client.login(secret.token);

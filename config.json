@@ -1,5 +1,4 @@
 {
-	"token": "NzIwMTUwNjEzMDk0MDM5NTkz.XuLr4A.R2p-CyXPnsKWi0uz1EBEMH07WsE",
 	"prefix": "%",
 	"activity": {
 		"type": "WATCHING",
@@ -17,10 +16,23 @@
 		"videos": "706010085263933440"
 	},
 	"audio": {
-		"inhale": "https://www.youtube.com/watch?v=-_B-Bbyzfco",
-		"throat": "https://www.youtube.com/watch?v=f1IT2y_l_zc",
 		"reee": "https://www.youtube.com/watch?v=ptXsXrMs5No",
-		"rickroll": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+		"rickroll": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+		"thomas": "https://www.youtube.com/watch?v=GnrwM7vFn_U",
+		"running": "https://www.youtube.com/watch?v=BJ0xBCwkg3E",
+		"gas": "https://www.youtube.com/watch?v=fTFxE32onKs",
+		"rasputin": "https://www.youtube.com/watch?v=SYnVYJDxu2Q",
+		"gear": "https://www.youtube.com/watch?v=KJvvd8_aGIs",
+		"sounds": "https://www.youtube.com/watch?v=vrMCz9VcFhk",
+		"call": "https://www.youtube.com/watch?v=n_WorPInSPQ",
+		"callremix": "https://www.youtube.com/watch?v=dwexm0erwn8",
+		"trailer": "https://www.youtube.com/watch?v=V8E02WPWFtk",
+		"uuua": "https://www.youtube.com/watch?v=OLIKiwVR4a0",
+		"countdown": "https://www.youtube.com/watch?v=9jK-NcRmVcw",
+		"ymca": "https://www.youtube.com/watch?v=CS9OO0S5w2k",
+		"distract": "https://www.youtube.com/watch?v=6XK4S8OQPuU",
+		"mii": "https://www.youtube.com/watch?v=Um4OQ6KP1m4",
+		"spin": "https://www.youtube.com/watch?v=QnABC0b1gCI"
 	},
 	"colors": {
 		"error": "cf1a1a",
@@ -28,5 +40,5 @@
 		"success": "1aa514",
 		"info": "1793ba"
 	},
-	"ver": "0.1.0"
+	"ver": "0.1.10"
 }
