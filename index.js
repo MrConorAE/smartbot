@@ -662,14 +662,13 @@ client.on('message', msg => {
 							filter: 'audioonly'
 						});
 						dispatcher = connection.play(stream);
-						var loading = await msg.channel.send("loading " + arg + ", hold on...\n(if this doesn't change, try again in a minute)");
+						var loading = msg.channel.send("loading " + arg + ", hold on...\n(if this doesn't change, try again in a minute)");
 						dispatcher.on('start', () => function () {
 							loading.edit("ok, playing " + arg);
 						});
 						dispatcher.on('error', () => function () {
 							loading.edit("hmm, couldn't play " + arg + ". try again in a minute");
 						});
-
 					}
 					//});
 				});
