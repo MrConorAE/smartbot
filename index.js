@@ -658,17 +658,19 @@ client.on('message', msg => {
 						return;
 					}
 					if (selected) {
-						stream = ytdl(selected, {
-							filter: 'audioonly'
-						});
-						dispatcher = connection.play(stream);
 						msg.channel.send("loading " + arg + ", hold on...");
-						dispatcher.on('start', () => function () {
-							msg.channel.send("ok, playing " + arg);
-						});
-						dispatcher.on('error', () => function () {
-							msg.channel.send("hmm, couldn't play " + arg + ". try again in a minute");
-						});
+						setTimeout(function () {
+							stream = ytdl(selected, {
+								filter: 'audioonly'
+							});
+							dispatcher = connection.play(stream);
+							dispatcher.on('start', () => function () {
+								msg.channel.send("ok, playing " + arg);
+							});
+							dispatcher.on('error', () => function () {
+								msg.channel.send("hmm, couldn't play " + arg + ". try again in a minute");
+							});
+						}, 100);
 					}
 					//});
 				});
