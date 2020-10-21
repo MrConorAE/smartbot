@@ -664,10 +664,10 @@ client.on('message', msg => {
 						dispatcher = connection.play(stream);
 						loading = msg.channel.send("loading " + arg + ", hold on...\n(if this doesn't change, try again in a minute)");
 						dispatcher.on('start', () => function () {
-							loading.send("ok, playing " + arg);
+							loading.edit("ok, playing " + arg);
 						});
 						dispatcher.on('error', () => function () {
-							loading.send("hmm, couldn't play " + arg + ". try again in a minute");
+							loading.edit("hmm, couldn't play " + arg + ". try again in a minute");
 						});
 					}
 					//});
