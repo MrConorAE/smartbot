@@ -95,8 +95,12 @@ client.on('message', msg => {
 			msg.delete();
 			suggestion = msg.content;
 			suggestionChannel = client.channels.cache.get(config.channels.videos);
+			// pre posting checks
 			if (suggestion == "") {
 				return;
+			} else if (suggestion.toLowerCase().includes("physics video")) {
+				msg.delete();
+				msg.channel.send("> 'Physics video aint happening pls stop filling #video-ideas'\n> *~ SmartGeneral\n\nYour suggestion was automatically deleted.");
 			}
 			suggestionSent = undefined;
 			suggestionChannel.send({
@@ -370,33 +374,6 @@ client.on('message', msg => {
 						}
 					});
 				}
-				break;
-			case "suggest":
-				suggestion = msg.content.replace(config.prefix + command, '').trim();
-				suggestionChannel = client.channels.cache.get(config.channels.videos);
-				if (suggestion == "") {
-					msg.channel.send("You know, it'd be nice if you *actually suggested something*...");
-					return;
-				}
-				suggestionChannel.send({
-					embed: {
-						color: config.colors.info,
-						author: {
-							name: "Video Suggestion",
-							icon_url: "https://i.ibb.co/VBcP7Z0/video.png"
-						},
-						title: suggestion,
-						timestamp: new Date(),
-						footer: {
-							icon_url: "",
-							text: "by " + msg.author.username
-						}
-					}
-				}).then(sentEmbed => {
-					sentEmbed.react("👍");
-					sentEmbed.react("👎");
-					sentEmbed.react("⛔");
-				});
 				break;
 			case "clear":
 				// Clear messages in a channel.
