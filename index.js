@@ -100,7 +100,7 @@ client.on('message', msg => {
 				return;
 			} else if (suggestion.toLowerCase().includes("physics video")) {
 				msg.delete();
-				msg.channel.send("> 'Physics video aint happening pls stop filling #video-ideas'\n> *~ SmartGeneral\n\nYour suggestion was automatically deleted.");
+				msg.channel.send("> 'Physics video aint happening pls stop filling #video-ideas'\n> *~ SmartGeneral*\n\nYour suggestion was automatically deleted.");
 				return;
 			}
 			suggestionSent = undefined;
