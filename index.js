@@ -101,6 +101,7 @@ client.on('message', msg => {
 			} else if (suggestion.toLowerCase().includes("physics video")) {
 				msg.delete();
 				msg.channel.send("> 'Physics video aint happening pls stop filling #video-ideas'\n> *~ SmartGeneral\n\nYour suggestion was automatically deleted.");
+				return;
 			}
 			suggestionSent = undefined;
 			suggestionChannel.send({
@@ -142,7 +143,7 @@ client.on('message', msg => {
 									icon_url: "https://i.ibb.co/ThWryyQ/generic-success.png"
 								},
 								title: "Video suggestion removed!",
-								description: msg.author.username + "'s suggestion ('" + suggestion + "') was voted out.",
+								description: msg.author.username + "'s suggestion ('" + suggestion + "') was voted out or deleted.",
 								timestamp: new Date(),
 								footer: {
 									icon_url: "",
