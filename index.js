@@ -571,6 +571,8 @@ client.on('message', msg => {
 						selected = config.audio.mii;
 					} else if (arg == "spin") {
 						selected = config.audio.spin;
+					} else if (arg == "stickbugged") {
+						selected = config.audio.stickbugged;
 					} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
 						if (arg == "https://www.youtube.com/watch?v=zQawXvCd-fs") {
 							msg.channel.send("no, not again");
@@ -632,7 +634,7 @@ client.on('message', msg => {
 							msg.channel.send("No.");
 						}
 					} else {
-						msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin - or send a YouTube link!");
+						msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin, stickbugged - or send a YouTube link!");
 						return;
 					}
 					if (selected) {
