@@ -536,12 +536,6 @@ client.on('message', msg => {
 					dispatcher.on('end', () => function () {*/
 					var selected;
 					var dispatcher;
-					dispatcher.on('start', () => function () {
-						msg.channel.send("ok, playing " + arg);
-					});
-					dispatcher.on('error', () => function () {
-						msg.channel.send("hmm, couldn't play " + arg + ". try again in a minute");
-					});
 					var audio;
 					if (arg == "ree") {
 						selected = config.audio.reee;
@@ -648,6 +642,12 @@ client.on('message', msg => {
 								filter: 'audioonly'
 							});
 							dispatcher = connection.play(stream);
+							dispatcher.on('start', () => function () {
+								msg.channel.send("ok, playing " + arg);
+							});
+							dispatcher.on('error', () => function () {
+								msg.channel.send("hmm, couldn't play " + arg + ". try again in a minute");
+							});
 						}, 100);
 					}
 					//});
