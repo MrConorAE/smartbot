@@ -17,6 +17,8 @@ var commands = 0;
 var exec = require('child_process').exec;
 
 var queue = [];
+var voiceChannel;
+var connection;
 
 function execute(command) {
 	exec(command, function (error, stdout, stderr) {
@@ -372,75 +374,7 @@ client.on('message', msg => {
 				}
 				break;
 			case "suggest":
-				suggestion = msg.content.replace(config.prefix + command, '').trim();
-				suggestionChannel = client.channels.cache.get(config.channels.videos);
-				if (suggestion == "") {
-					msg.channel.send("You know, it'd be nice if you *actually suggested something*...");
-					return;
-				}
-				suggestionChannel.send({
-					embed: {
-						color: config.colors.info,
-						author: {
-							name: "Video Suggestion",
-							icon_url: "https://i.ibb.co/VBcP7Z0/video.png"
-						},
-						title: suggestion,
-						timestamp: new Date(),
-						footer: {
-							icon_url: "",
-							text: "by " + msg.author.username
-						}
-					}
-				}).then(sentEmbed => {
-					sentEmbed.react("👍");
-					sentEmbed.react("👎");
-					sentEmbed.react("⛔");
-				});
-				break;
-			case "clear":
-				// Clear messages in a channel.
-				num = msg.content.replace(config.prefix + command, '').trim(); // Get the amount of messages to clear.
-				if (num == "" || parseInt(num) < 1 || isNaN(parseInt(num))) {
-					msg.channel.send("You know, it'd be nice if you *actually told me how many to clear*...");
-					return;
-				}
-				if (hasRole(msg.member, config.roles.commander)) {
-					// They are authorised.
-					msg.channel.bulkDelete(Number(num) + 1);
-					msg.channel.send("Foof! " + num + " messages are now no more.");
-					log({
-						color: config.colors.success,
-						author: {
-							name: "Bulk Delete Successful",
-							icon_url: "https://i.ibb.co/DrPgS1T/bulk-clear.png"
-						},
-						title: "Messages Cleared!",
-						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
-						timestamp: new Date(),
-						footer: {
-							icon_url: "",
-							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-						}
-					});
-				} else {
-					// They are not authorised.
-					msg.channel.send("No.");
-					log({
-						color: config.colors.warning,
-						author: {
-							name: "Permission Denied",
-							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
-						},
-						title: "Bulk Delete denied.",
-						description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
-						timestamp: new Date(),
-						footer: {
-							icon_url: "",
-							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
-						}
-					});
-				}
+				msg.channel.send(":warning: This command is deprecated. Please just send your suggestion directly to the suggestions channel.");
 				break;
 			case "ban":
 				// Ban a user.
@@ -536,142 +470,151 @@ client.on('message', msg => {
 			case "voice":
 				if (msg.channel.type !== 'text') return;
 
-				var voiceChannel = msg.member.voice.channel;
+				var userVoice = msg.member.voice.channel;
 
-				if (!voiceChannel) {
-					return msg.channel.send('join a voice channel first, dum dum');
+				if (!userVoice) {
+					return msg.channel.send("you need to be in a voice channel to control voice, dum dum");
+				} else if (!voiceChannel) {
+					return msg.channel.send("i need to join a voice channel first, dum dum");
+				} else if (userVoice == voiceChannel) {
+					return msg.channel.send("i'm already in a different voice channel, sorry\neither move into the other channel, or ask for the other user(s) to disconnect me (`%v leave`).");
 				}
 
-				voiceChannel.join().then(connection => {
-					var stream;
-					arg = msg.content.replace(config.prefix + command, '').trim();
-					/*if (randInt(0, 1) == 0) {
-						stream = ytdl(config.audio.inhale, {
-							filter: 'audioonly'
-						});
-					} else {
-						stream = ytdl(config.audio.throat, {
-							filter: 'audioonly'
-						});
-					}
-					dispatcher = connection.play(stream);
-					dispatcher.on('end', () => function () {*/
-					var selected;
-					var dispatcher;
-					var audio;
-					if (arg == "ree") {
-						selected = config.audio.reee;
-					} else if (arg == "rickroll") {
-						selected = config.audio.rickroll;
-					} else if (arg == "thomas") {
-						selected = config.audio.thomas;
-					} else if (arg == "running") {
-						selected = config.audio.running;
-					} else if (arg == "gas") {
-						selected = config.audio.gas;
-					} else if (arg == "rasputin") {
-						selected = config.audio.rasputin;
-					} else if (arg == "gear") {
-						selected = config.audio.gear;
-					} else if (arg == "sounds") {
-						selected = config.audio.sounds;
-					} else if (arg == "call") {
-						selected = config.audio.call;
-					} else if (arg == "callremix") {
-						selected = config.audio.callremix;
-					} else if (arg == "trailer") {
-						selected = config.audio.trailer;
-					} else if (arg == "uuua") {
-						selected = config.audio.uuua;
-					} else if (arg == "countdown") {
-						selected = config.audio.countdown;
-					} else if (arg == "ymca") {
-						selected = config.audio.ymca;
-					} else if (arg == "distract") {
-						selected = config.audio.distract;
-					} else if (arg == "mii") {
-						selected = config.audio.mii;
-					} else if (arg == "spin") {
-						selected = config.audio.spin;
-					} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
-						if (arg == "https://www.youtube.com/watch?v=zQawXvCd-fs") {
-							msg.channel.send("no, not again");
+				if (connection) {
+					// Already connected.
+				} else {
+					// Not connected yet, so join.
+					connection = voiceChannel.join().then(connection => {
+						var stream;
+						arg = msg.content.replace(config.prefix + command, '').trim();
+						/*if (randInt(0, 1) == 0) {
+							stream = ytdl(config.audio.inhale, {
+								filter: 'audioonly'
+							});
+						} else {
+							stream = ytdl(config.audio.throat, {
+								filter: 'audioonly'
+							});
+						}
+						dispatcher = connection.play(stream);
+						dispatcher.on('end', () => function () {*/
+						var selected;
+						var dispatcher;
+						var audio;
+						if (arg == "ree") {
+							selected = config.audio.reee;
+						} else if (arg == "rickroll") {
+							selected = config.audio.rickroll;
+						} else if (arg == "thomas") {
+							selected = config.audio.thomas;
+						} else if (arg == "running") {
+							selected = config.audio.running;
+						} else if (arg == "gas") {
+							selected = config.audio.gas;
+						} else if (arg == "rasputin") {
+							selected = config.audio.rasputin;
+						} else if (arg == "gear") {
+							selected = config.audio.gear;
+						} else if (arg == "sounds") {
+							selected = config.audio.sounds;
+						} else if (arg == "call") {
+							selected = config.audio.call;
+						} else if (arg == "callremix") {
+							selected = config.audio.callremix;
+						} else if (arg == "trailer") {
+							selected = config.audio.trailer;
+						} else if (arg == "uuua") {
+							selected = config.audio.uuua;
+						} else if (arg == "countdown") {
+							selected = config.audio.countdown;
+						} else if (arg == "ymca") {
+							selected = config.audio.ymca;
+						} else if (arg == "distract") {
+							selected = config.audio.distract;
+						} else if (arg == "mii") {
+							selected = config.audio.mii;
+						} else if (arg == "spin") {
+							selected = config.audio.spin;
+						} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
+							if (arg == "https://www.youtube.com/watch?v=zQawXvCd-fs") {
+								msg.channel.send("no, not again");
+								return;
+							}
+							selected = arg;
+							arg = "the video";
+						} else if (arg == "leave") {
+							voiceChannel.leave();
+							msg.channel.send(":( bye");
 							return;
 						}
-						selected = arg;
-						arg = "the video";
-					} else if (arg == "leave") {
-						voiceChannel.leave();
-						msg.channel.send(":( bye");
-						return;
-					}
-					// Special cases: control commands
-					/*
-					else if (arg == "pause") {
-						if (!dispatcher.paused) {
-							msg.channel.send("righty ho, pausing");
-							dispatcher.pause();
+						// Special cases: control commands
+						/*
+						else if (arg == "pause") {
+							if (!dispatcher.paused) {
+								msg.channel.send("righty ho, pausing");
+								dispatcher.pause();
+							} else {
+								msg.channel.send("there's nothing playing to pause, dum dum");
+							}
+							return;
+						} else if (arg == "resume") {
+							if (dispatcher.paused) {
+								msg.channel.send("righty ho, resuming");
+								dispatcher.pause();
+							} else {
+								msg.channel.send("there's nothing paused to resume, dum dum");
+							}
+							return;
+						} */
+						else if (arg.startsWith("record")) {
+							if (hasRole(msg.member, config.roles.commander)) {
+								// Create a ReadableStream of s16le PCM audio
+								audio = connection.receiver.createStream(msg.mentions.members.first(), {
+									mode: 'pcm',
+									end: 'manual'
+								});
+								audio.pipe(fs.createWriteStream('user_audio'));
+								msg.channel.send("ok, started");
+							} else {
+								msg.channel.send("No.");
+							}
+						} else if (arg == "stoprecord") {
+							if (hasRole(msg.member, config.roles.commander)) {
+								// Destroy the ReadableStream
+								audio.destroy();
+								msg.channel.send("ok, stopped");
+							} else {
+								msg.channel.send("No.");
+							}
+						} else if (arg == "playrecord") {
+							if (hasRole(msg.member, config.roles.commander)) {
+								dispatcher = connection.play(audio, {
+									type: 'opus'
+								});
+								msg.channel.send("ok, playing");
+							} else {
+								msg.channel.send("No.");
+							}
 						} else {
-							msg.channel.send("there's nothing playing to pause, dum dum");
+							msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin - or send a YouTube link!");
+							return;
 						}
-						return;
-					} else if (arg == "resume") {
-						if (dispatcher.paused) {
-							msg.channel.send("righty ho, resuming");
-							dispatcher.pause();
-						} else {
-							msg.channel.send("there's nothing paused to resume, dum dum");
-						}
-						return;
-					} */
-					else if (arg.startsWith("record")) {
-						if (hasRole(msg.member, config.roles.commander)) {
-							// Create a ReadableStream of s16le PCM audio
-							audio = connection.receiver.createStream(msg.mentions.members.first(), {
-								mode: 'pcm',
-								end: 'manual'
+						if (selected) {
+							stream = ytdl(selected, {
+								filter: 'audioonly'
 							});
-							audio.pipe(fs.createWriteStream('user_audio'));
-							msg.channel.send("ok, started");
-						} else {
-							msg.channel.send("No.");
-						}
-					} else if (arg == "stoprecord") {
-						if (hasRole(msg.member, config.roles.commander)) {
-							// Destroy the ReadableStream
-							audio.destroy();
-							msg.channel.send("ok, stopped");
-						} else {
-							msg.channel.send("No.");
-						}
-					} else if (arg == "playrecord") {
-						if (hasRole(msg.member, config.roles.commander)) {
-							dispatcher = connection.play(audio, {
-								type: 'opus'
+							dispatcher = connection.play(stream);
+							loading = msg.channel.send("loading " + arg + ", hold on...\n(if this doesn't change, try again in a minute)");
+							dispatcher.on('start', () => function () {
+								loading.send("ok, playing " + arg);
 							});
-							msg.channel.send("ok, playing");
-						} else {
-							msg.channel.send("No.");
+							dispatcher.on('error', () => function () {
+								loading.send("hmm, couldn't play " + arg + ". try again in a minute");
+							});
 						}
-					} else {
-						msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin - or send a YouTube link!");
-						return;
-					}
-					if (selected) {
-						stream = ytdl(selected, {
-							filter: 'audioonly'
-						});
-						dispatcher = connection.play(stream);
-						loading = msg.channel.send("loading " + arg + ", hold on...\n(if this doesn't change, try again in a minute)");
-						dispatcher.on('start', () => function () {
-							loading.send("ok, playing " + arg);
-						});
-						dispatcher.on('error', () => function () {
-							loading.send("hmm, couldn't play " + arg + ". try again in a minute");
-						});
-					}
-					//});
-				});
+						//});
+					});
+				}
 				break;
 				// USEFUL COMMANDS
 			case "support":
