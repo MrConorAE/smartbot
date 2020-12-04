@@ -584,62 +584,12 @@ client.on('message', msg => {
 						voiceChannel.leave();
 						msg.channel.send(":( bye");
 						return;
-					}
-					// Special cases: control commands
-					/*
-					else if (arg == "pause") {
-						if (!dispatcher.paused) {
-							msg.channel.send("righty ho, pausing");
-							dispatcher.pause();
-						} else {
-							msg.channel.send("there's nothing playing to pause, dum dum");
-						}
-						return;
-					} else if (arg == "resume") {
-						if (dispatcher.paused) {
-							msg.channel.send("righty ho, resuming");
-							dispatcher.pause();
-						} else {
-							msg.channel.send("there's nothing paused to resume, dum dum");
-						}
-						return;
-					} */
-					else if (arg.startsWith("record")) {
-						if (hasRole(msg.member, config.roles.commander)) {
-							// Create a ReadableStream of s16le PCM audio
-							audio = connection.receiver.createStream(msg.mentions.members.first(), {
-								mode: 'pcm',
-								end: 'manual'
-							});
-							audio.pipe(fs.createWriteStream('user_audio'));
-							msg.channel.send("ok, started");
-						} else {
-							msg.channel.send("No.");
-						}
-					} else if (arg == "stoprecord") {
-						if (hasRole(msg.member, config.roles.commander)) {
-							// Destroy the ReadableStream
-							audio.destroy();
-							msg.channel.send("ok, stopped");
-						} else {
-							msg.channel.send("No.");
-						}
-					} else if (arg == "playrecord") {
-						if (hasRole(msg.member, config.roles.commander)) {
-							dispatcher = connection.play(audio, {
-								type: 'opus'
-							});
-							msg.channel.send("ok, playing");
-						} else {
-							msg.channel.send("No.");
-						}
 					} else {
 						msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin, stickbugged - or send a YouTube link!");
 						return;
 					}
 					if (selected) {
 						msg.channel.send("loading " + arg + ", hold on...");
-						setTimeout(function () {
 							stream = ytdl(selected, {
 								filter: 'audioonly'
 							});
@@ -650,7 +600,6 @@ client.on('message', msg => {
 							dispatcher.on('error', () => function () {
 								msg.channel.send("hmm, couldn't play " + arg + ". try again in a minute");
 							});
-						}, 100);
 					}
 					//});
 				});
