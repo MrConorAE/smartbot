@@ -590,16 +590,16 @@ client.on('message', msg => {
 					}
 					if (selected) {
 						msg.channel.send("loading " + arg + ", hold on...");
-							stream = ytdl(selected, {
-								filter: 'audioonly'
-							});
-							dispatcher = connection.play(stream);
-							dispatcher.on('start', () => function () {
-								msg.channel.send("ok, playing " + arg);
-							});
-							dispatcher.on('error', () => function () {
-								msg.channel.send("hmm, couldn't play " + arg + ". try again in a minute");
-							});
+						stream = ytdl(selected, {
+							filter: 'audioonly'
+						});
+						dispatcher = connection.play(stream);
+						dispatcher.on('start', () => function () {
+							msg.channel.send("ok, playing " + arg);
+						});
+						dispatcher.on('error', () => function () {
+							msg.channel.send("hmm, couldn't play " + arg + ". try again in a minute");
+						});
 					}
 					//});
 				});
