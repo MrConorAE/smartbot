@@ -44,7 +44,7 @@ function log(e) {
 }
 
 client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
+	console.log(`Connected as ${client.user.tag}. Version ${config.ver}, token ${secret.token}`);
 	let ch = client.channels.cache.get(config.channels.log);
 	client.user.setActivity((config.activity.content + " | " + config.prefix + "help"), {
 		type: config.activity.type
@@ -536,8 +536,9 @@ client.on('message', msg => {
 					dispatcher.on('end', () => function () {*/
 					var selected;
 					var dispatcher;
-					var audio;
-					if (arg == "ree") {
+					if (arg == "") {
+						msg.channel.send("here i come... ( ͡° ͜ʖ ͡°)");
+					} else if (arg == "ree") {
 						selected = config.audio.reee;
 					} else if (arg == "rickroll") {
 						selected = config.audio.rickroll;
@@ -726,9 +727,10 @@ client.on('message', msg => {
 		}
 		//#endregion
 	} catch (e) {
-		msg.channel.send("You broke something. Well done. Please report this in the support server (`%support`)!").then(sentMessage => {
+		msg.channel.send("You broke something. Well done. Please report this in the support server (`%support`)!\n", e).then(sentMessage => {
 			sentMessage.react('👏');
 		});
+		console.log("Error: ", e);
 		log({
 			color: config.colors.error,
 			author: {
@@ -757,7 +759,7 @@ client.on('message', msg => {
 process.on('unhandledRejection', error => function () {
 	ch = client.channels.cache.get(config.channels.general);
 	ch.send("Welp, Unhandled Promise Rejection. Please report this in the support server (`%support`)!");
-	console.error('Uncaught Promise Rejection', error);
+	console.error('Uncaught Promise Rejection: ', error);
 	log({
 		color: config.colors.error,
 		author: {
