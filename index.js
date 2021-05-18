@@ -46,7 +46,7 @@ function log(e) {
 }
 
 client.on('ready', () => {
-	console.log(`Logged in as ${client.user.tag}!`);
+	console.log(`Connected as ${client.user.tag}. Version ${config.ver}, token ${secret.token}`);
 	let ch = client.channels.cache.get(config.channels.log);
 	client.user.setActivity((config.activity.content + " | " + config.prefix + "help"), {
 		type: config.activity.type
@@ -97,7 +97,12 @@ client.on('message', msg => {
 			msg.delete();
 			suggestion = msg.content;
 			suggestionChannel = client.channels.cache.get(config.channels.videos);
+			// pre posting checks
 			if (suggestion == "") {
+				return;
+			} else if (suggestion.toLowerCase().includes("physics video")) {
+				msg.delete();
+				msg.channel.send("> 'Physics video aint happening pls stop filling #video-ideas'\n> *~ SmartGeneral*\n\nYour suggestion was automatically deleted.");
 				return;
 			}
 			suggestionSent = undefined;
@@ -140,7 +145,7 @@ client.on('message', msg => {
 									icon_url: "https://i.ibb.co/ThWryyQ/generic-success.png"
 								},
 								title: "Video suggestion removed!",
-								description: msg.author.username + "'s suggestion ('" + suggestion + "') was voted out.",
+								description: msg.author.username + "'s suggestion ('" + suggestion + "') was voted out or deleted.",
 								timestamp: new Date(),
 								footer: {
 									icon_url: "",
@@ -375,6 +380,49 @@ client.on('message', msg => {
 				break;
 			case "suggest":
 				msg.channel.send(":warning: This command is deprecated. Please just send your suggestion directly to the suggestions channel.");
+			case "clear":
+				// Clear messages in a channel.
+				num = msg.content.replace(config.prefix + command, '').trim(); // Get the amount of messages to clear.
+				if (num == "" || parseInt(num) < 1 || isNaN(parseInt(num))) {
+					msg.channel.send("You know, it'd be nice if you *actually told me how many to clear*...");
+					return;
+				}
+				if (hasRole(msg.member, config.roles.commander)) {
+					// They are authorised.
+					msg.channel.bulkDelete(Number(num) + 1);
+					msg.channel.send("Foof! " + num + " messages are now no more.");
+					log({
+						color: config.colors.success,
+						author: {
+							name: "Bulk Delete Successful",
+							icon_url: "https://i.ibb.co/DrPgS1T/bulk-clear.png"
+						},
+						title: "Messages Cleared!",
+						description: msg.author.username + " cleared " + num + " messages in the " + msg.channel.name + " channel.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				} else {
+					// They are not authorised.
+					msg.channel.send("No.");
+					log({
+						color: config.colors.warning,
+						author: {
+							name: "Permission Denied",
+							icon_url: "https://i.ibb.co/3zq37sV/permissions.png"
+						},
+						title: "Bulk Delete denied.",
+						description: msg.author.username + " attempted to clear " + num + " messages in the " + msg.channel.name + " channel.",
+						timestamp: new Date(),
+						footer: {
+							icon_url: "",
+							text: "Channel: " + msg.channel.name + " - User: " + msg.author.username
+						}
+					});
+				}
 				break;
 			case "ban":
 				// Ban a user.
@@ -479,7 +527,6 @@ client.on('message', msg => {
 				} else if (userVoice == voiceChannel) {
 					return msg.channel.send("i'm already in a different voice channel, sorry\neither move into the other channel, or ask for the other user(s) to disconnect me (`%v leave`).");
 				}
-
 				if (connection) {
 					// Already connected.
 				} else {
@@ -738,9 +785,10 @@ client.on('message', msg => {
 		}
 		//#endregion
 	} catch (e) {
-		msg.channel.send("You broke something. Well done. Please report this in the support server (`%support`)!").then(sentMessage => {
+		msg.channel.send("You broke something. Well done. Please report this in the support server (`%support`)!\n", e).then(sentMessage => {
 			sentMessage.react('👏');
 		});
+		console.log("Error: ", e);
 		log({
 			color: config.colors.error,
 			author: {
@@ -769,7 +817,7 @@ client.on('message', msg => {
 process.on('unhandledRejection', error => function () {
 	ch = client.channels.cache.get(config.channels.general);
 	ch.send("Welp, Unhandled Promise Rejection. Please report this in the support server (`%support`)!");
-	console.error('Uncaught Promise Rejection', error);
+	console.error('Uncaught Promise Rejection: ', error);
 	log({
 		color: config.colors.error,
 		author: {

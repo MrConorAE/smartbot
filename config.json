@@ -32,7 +32,8 @@
 		"ymca": "https://www.youtube.com/watch?v=CS9OO0S5w2k",
 		"distract": "https://www.youtube.com/watch?v=6XK4S8OQPuU",
 		"mii": "https://www.youtube.com/watch?v=Um4OQ6KP1m4",
-		"spin": "https://www.youtube.com/watch?v=QnABC0b1gCI"
+		"spin": "https://www.youtube.com/watch?v=QnABC0b1gCI",
+		"stickbugged": "https://www.youtube.com/watch?v=fC7oUOUEEi4"
 	},
 	"colors": {
 		"error": "cf1a1a",
@@ -40,5 +41,5 @@
 		"success": "1aa514",
 		"info": "1793ba"
 	},
-	"ver": "0.1.10"
+	"ver": "0.1.13a1-0412"
 }
