@@ -523,14 +523,14 @@ client.on('message', msg => {
 
 				if (!userVoice) {
 					return msg.channel.send("you need to be in a voice channel to control voice, dum dum");
-				} else if (userVoice == voiceChannel) {
+				} else if (userVoice != voiceChannel) {
 					return msg.channel.send("i'm already in a different voice channel, sorry\neither move into the other channel, or ask for the other user(s) to disconnect me (`%v leave`).");
 				}
 				if (connection) {
 					// Already connected.
 				} else {
 					// Not connected yet, so join.
-					connection = voiceChannel.join();
+					connection = userVoice.join();
 				}
 				var stream;
 				arg = msg.content.replace(config.prefix + command, '').trim();
