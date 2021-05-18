@@ -361,7 +361,7 @@ client.on('message', msg => {
 					});
 				} else {
 					// They are not authorised.
-					msg.channel.send("No.");
+					msg.channel.send("no.");
 					log({
 						color: config.colors.warning,
 						author: {
@@ -379,19 +379,19 @@ client.on('message', msg => {
 				}
 				break;
 			case "suggest":
-				msg.channel.send(":warning: This command is deprecated. Please just send your suggestion directly to the suggestions channel.");
+				msg.channel.send(":no-entry: This command is deprecated. Please just send your suggestion directly to the suggestions channel.");
 				break;
 			case "clear":
 				// Clear messages in a channel.
 				num = msg.content.replace(config.prefix + command, '').trim(); // Get the amount of messages to clear.
 				if (num == "" || parseInt(num) < 1 || isNaN(parseInt(num))) {
-					msg.channel.send("You know, it'd be nice if you *actually told me how many to clear*...");
+					msg.channel.send("lol imagine not specifying how many messages to clear");
 					return;
 				}
 				if (hasRole(msg.member, config.roles.commander)) {
 					// They are authorised.
 					msg.channel.bulkDelete(Number(num) + 1);
-					msg.channel.send("Foof! " + num + " messages are now no more.");
+					msg.channel.send("foof! " + num + " messages are now no more.");
 					log({
 						color: config.colors.success,
 						author: {
@@ -408,7 +408,7 @@ client.on('message', msg => {
 					});
 				} else {
 					// They are not authorised.
-					msg.channel.send("No.");
+					msg.channel.send("no.");
 					log({
 						color: config.colors.warning,
 						author: {
@@ -428,7 +428,7 @@ client.on('message', msg => {
 			case "ban":
 				// Ban a user.
 				if (msg.content.replace(config.prefix + command, '').trim() == "" || msg.mentions.users.size == 0) {
-					msg.channel.send("You know, it'd be nice if you *actually told me who to ban*...");
+					msg.channel.send("lol imagine not mentioning who to ban");
 					return;
 				}
 				user = msg.mentions.users.first();
@@ -437,7 +437,7 @@ client.on('message', msg => {
 					msg.guild.members.ban(user, {
 						reason: `Banned by ${msg.author.username}, using SmartBot.`
 					});
-					msg.channel.send("Hippity hoppity, " + user.username + " is banned from this property.");
+					msg.channel.send("hippity hoppity, " + user.username + " is banned from this property.");
 					log({
 						color: config.colors.success,
 						author: {
@@ -454,7 +454,7 @@ client.on('message', msg => {
 					});
 				} else {
 					// They are not authorised.
-					msg.channel.send("No.");
+					msg.channel.send("no.");
 					log({
 						color: config.colors.warning,
 						author: {
@@ -474,14 +474,14 @@ client.on('message', msg => {
 			case "kick":
 				// Kick a user.
 				if (msg.content.replace(config.prefix + command, '').trim() == "" || msg.mentions.users.size == 0) {
-					msg.channel.send("You know, it'd be nice if you *actually told me who to kick*...");
+					msg.channel.send("lol imagine not mentioning who to kick");
 					return;
 				}
 				member = msg.mentions.members.first();
 				if (hasRole(msg.member, config.roles.commander)) {
 					// They are authorised.
 					member.kick(`Kicked by ${msg.author.username}, using SmartBot.`);
-					msg.channel.send("Yeet! " + member.user.username + " is kicked.");
+					msg.channel.send("yeet! " + member.user.username + " was kicked.");
 					log({
 						color: config.colors.success,
 						author: {
@@ -498,7 +498,7 @@ client.on('message', msg => {
 					});
 				} else {
 					// They are not authorised.
-					msg.channel.send("No.");
+					msg.channel.send("no.");
 					log({
 						color: config.colors.warning,
 						author: {
@@ -522,9 +522,11 @@ client.on('message', msg => {
 				var userVoice = msg.member.voice.channel;
 
 				if (!userVoice) {
+					// If the user isn't in a VC, return
 					return msg.channel.send("you need to be in a voice channel to control voice, dum dum");
-				} else if (userVoice != voiceChannel) {
-					return msg.channel.send("i'm already in a different voice channel, sorry\neither move into the other channel, or ask for the other user(s) to disconnect me (`%v leave`).");
+				} else if ((userVoice != voiceChannel) && voiceChannel) {
+					// If the user's VC is different to ours, return
+					return msg.channel.send("i'm already in a different voice channel, sorry\neither move into the other channel, or ask the other channel to disconnect me (`%v leave`).");
 				}
 				if (connection) {
 					// Already connected.
@@ -595,8 +597,8 @@ client.on('message', msg => {
 					return;
 				}
 				// Special cases: control commands
-				/*
-				else if (arg == "pause") {
+
+				/* else if (arg == "pause") {
 					if (!dispatcher.paused) {
 						msg.channel.send("righty ho, pausing");
 						dispatcher.pause();
@@ -612,7 +614,7 @@ client.on('message', msg => {
 						msg.channel.send("there's nothing paused to resume, dum dum");
 					}
 					return;
-				} */
+				}
 				else if (arg.startsWith("record")) {
 					if (hasRole(msg.member, config.roles.commander)) {
 						// Create a ReadableStream of s16le PCM audio
@@ -623,7 +625,7 @@ client.on('message', msg => {
 						audio.pipe(fs.createWriteStream('user_audio'));
 						msg.channel.send("ok, started");
 					} else {
-						msg.channel.send("No.");
+						msg.channel.send("no.");
 					}
 				} else if (arg == "stoprecord") {
 					if (hasRole(msg.member, config.roles.commander)) {
@@ -631,7 +633,7 @@ client.on('message', msg => {
 						audio.destroy();
 						msg.channel.send("ok, stopped");
 					} else {
-						msg.channel.send("No.");
+						msg.channel.send("no.");
 					}
 				} else if (arg == "playrecord") {
 					if (hasRole(msg.member, config.roles.commander)) {
@@ -640,18 +642,19 @@ client.on('message', msg => {
 						});
 						msg.channel.send("ok, playing");
 					} else {
-						msg.channel.send("No.");
+						msg.channel.send("no.");
 					}
-				} else {
-					msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin - or send a YouTube link!");
+				} */
+				else {
+					msg.channel.send("yea, didn't get that\navailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin - or send a YouTube link to play it");
 					return;
 				}
 				if (selected) {
 					stream = ytdl(selected, {
 						filter: 'audioonly'
 					});
-					dispatcher = connection.play(stream);
 					loading = msg.channel.send("loading " + arg + ", hold on...\n(if this doesn't change, try again in a minute)");
+					dispatcher = connection.play(stream);
 					dispatcher.on('start', () => function () {
 						loading.send("ok, playing " + arg);
 					});
@@ -667,7 +670,7 @@ client.on('message', msg => {
 				break;
 			case "restart":
 				if (msg.author.id === "491026695244087316") {
-					msg.channel.send("Wheeee! Let's get reincarnated by PM2!");
+					msg.channel.send("brb, restarting myself");
 					log({
 						color: config.colors.info,
 						author: {
@@ -685,7 +688,7 @@ client.on('message', msg => {
 					process.exit();
 				} else {
 					// They are not authorised.
-					msg.channel.send("No.");
+					msg.channel.send("no.");
 					log({
 						color: config.colors.warning,
 						author: {
@@ -704,7 +707,7 @@ client.on('message', msg => {
 				break;
 			case "reconnect":
 				if (msg.author.id === "491026695244087316") {
-					msg.channel.send("'Turn it off and on again', they said...");
+					msg.channel.send("brb, reconnecting to discord");
 					log({
 						color: config.colors.info,
 						author: {
@@ -724,7 +727,7 @@ client.on('message', msg => {
 					});
 				} else {
 					// They are not authorised.
-					msg.channel.send("No.");
+					msg.channel.send("no.");
 					log({
 						color: config.colors.warning,
 						author: {
@@ -743,7 +746,7 @@ client.on('message', msg => {
 				break;
 			case "shutdown":
 				if (msg.author.id === "491026695244087316") {
-					msg.channel.send("Right, off to kill myself.");
+					msg.channel.send("bye world");
 					log({
 						color: config.colors.error,
 						author: {
@@ -763,7 +766,7 @@ client.on('message', msg => {
 					});
 				} else {
 					// They are not authorised.
-					msg.channel.send("No.");
+					msg.channel.send("no.");
 					log({
 						color: config.colors.warning,
 						author: {
@@ -783,7 +786,7 @@ client.on('message', msg => {
 		}
 		//#endregion
 	} catch (e) {
-		msg.channel.send("You broke something. Well done. Please report this in the support server (`%support`)!\n", e).then(sentMessage => {
+		msg.channel.send("good job,  you broke it\n", e).then(sentMessage => {
 			sentMessage.react('👏');
 		});
 		console.log("Error: ", e);
@@ -814,7 +817,7 @@ client.on('message', msg => {
 
 process.on('unhandledRejection', error => function () {
 	ch = client.channels.cache.get(config.channels.general);
-	ch.send("Welp, Unhandled Promise Rejection. Please report this in the support server (`%support`)!");
+	ch.send("ah crap, unhandled promise rejection");
 	console.error('Uncaught Promise Rejection: ', error);
 	log({
 		color: config.colors.error,
