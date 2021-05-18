@@ -523,8 +523,6 @@ client.on('message', msg => {
 
 				if (!userVoice) {
 					return msg.channel.send("you need to be in a voice channel to control voice, dum dum");
-				} else if (!voiceChannel) {
-					return msg.channel.send("i need to join a voice channel first, dum dum");
 				} else if (userVoice == voiceChannel) {
 					return msg.channel.send("i'm already in a different voice channel, sorry\neither move into the other channel, or ask for the other user(s) to disconnect me (`%v leave`).");
 				}
@@ -532,137 +530,136 @@ client.on('message', msg => {
 					// Already connected.
 				} else {
 					// Not connected yet, so join.
-					connection = voiceChannel.join().then(connection => {
-						var stream;
-						arg = msg.content.replace(config.prefix + command, '').trim();
-						/*if (randInt(0, 1) == 0) {
-							stream = ytdl(config.audio.inhale, {
-								filter: 'audioonly'
-							});
-						} else {
-							stream = ytdl(config.audio.throat, {
-								filter: 'audioonly'
-							});
-						}
-						dispatcher = connection.play(stream);
-						dispatcher.on('end', () => function () {*/
-						var selected;
-						var dispatcher;
-						var audio;
-						if (arg == "ree") {
-							selected = config.audio.reee;
-						} else if (arg == "rickroll") {
-							selected = config.audio.rickroll;
-						} else if (arg == "thomas") {
-							selected = config.audio.thomas;
-						} else if (arg == "running") {
-							selected = config.audio.running;
-						} else if (arg == "gas") {
-							selected = config.audio.gas;
-						} else if (arg == "rasputin") {
-							selected = config.audio.rasputin;
-						} else if (arg == "gear") {
-							selected = config.audio.gear;
-						} else if (arg == "sounds") {
-							selected = config.audio.sounds;
-						} else if (arg == "call") {
-							selected = config.audio.call;
-						} else if (arg == "callremix") {
-							selected = config.audio.callremix;
-						} else if (arg == "trailer") {
-							selected = config.audio.trailer;
-						} else if (arg == "uuua") {
-							selected = config.audio.uuua;
-						} else if (arg == "countdown") {
-							selected = config.audio.countdown;
-						} else if (arg == "ymca") {
-							selected = config.audio.ymca;
-						} else if (arg == "distract") {
-							selected = config.audio.distract;
-						} else if (arg == "mii") {
-							selected = config.audio.mii;
-						} else if (arg == "spin") {
-							selected = config.audio.spin;
-						} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
-							if (arg == "https://www.youtube.com/watch?v=zQawXvCd-fs") {
-								msg.channel.send("no, not again");
-								return;
-							}
-							selected = arg;
-							arg = "the video";
-						} else if (arg == "leave") {
-							voiceChannel.leave();
-							msg.channel.send(":( bye");
-							return;
-						}
-						// Special cases: control commands
-						/*
-						else if (arg == "pause") {
-							if (!dispatcher.paused) {
-								msg.channel.send("righty ho, pausing");
-								dispatcher.pause();
-							} else {
-								msg.channel.send("there's nothing playing to pause, dum dum");
-							}
-							return;
-						} else if (arg == "resume") {
-							if (dispatcher.paused) {
-								msg.channel.send("righty ho, resuming");
-								dispatcher.pause();
-							} else {
-								msg.channel.send("there's nothing paused to resume, dum dum");
-							}
-							return;
-						} */
-						else if (arg.startsWith("record")) {
-							if (hasRole(msg.member, config.roles.commander)) {
-								// Create a ReadableStream of s16le PCM audio
-								audio = connection.receiver.createStream(msg.mentions.members.first(), {
-									mode: 'pcm',
-									end: 'manual'
-								});
-								audio.pipe(fs.createWriteStream('user_audio'));
-								msg.channel.send("ok, started");
-							} else {
-								msg.channel.send("No.");
-							}
-						} else if (arg == "stoprecord") {
-							if (hasRole(msg.member, config.roles.commander)) {
-								// Destroy the ReadableStream
-								audio.destroy();
-								msg.channel.send("ok, stopped");
-							} else {
-								msg.channel.send("No.");
-							}
-						} else if (arg == "playrecord") {
-							if (hasRole(msg.member, config.roles.commander)) {
-								dispatcher = connection.play(audio, {
-									type: 'opus'
-								});
-								msg.channel.send("ok, playing");
-							} else {
-								msg.channel.send("No.");
-							}
-						} else {
-							msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin - or send a YouTube link!");
-							return;
-						}
-						if (selected) {
-							stream = ytdl(selected, {
-								filter: 'audioonly'
-							});
-							dispatcher = connection.play(stream);
-							loading = msg.channel.send("loading " + arg + ", hold on...\n(if this doesn't change, try again in a minute)");
-							dispatcher.on('start', () => function () {
-								loading.send("ok, playing " + arg);
-							});
-							dispatcher.on('error', () => function () {
-								loading.send("hmm, couldn't play " + arg + ". try again in a minute");
-							});
-						}
-						//});
+					connection = voiceChannel.join();
+				}
+				var stream;
+				arg = msg.content.replace(config.prefix + command, '').trim();
+				/*if (randInt(0, 1) == 0) {
+					stream = ytdl(config.audio.inhale, {
+						filter: 'audioonly'
+					});
+				} else {
+					stream = ytdl(config.audio.throat, {
+						filter: 'audioonly'
 					});
 				}
+				dispatcher = connection.play(stream);
+				dispatcher.on('end', () => function () {*/
+				var selected;
+				var dispatcher;
+				var audio;
+				if (arg == "ree") {
+					selected = config.audio.reee;
+				} else if (arg == "rickroll") {
+					selected = config.audio.rickroll;
+				} else if (arg == "thomas") {
+					selected = config.audio.thomas;
+				} else if (arg == "running") {
+					selected = config.audio.running;
+				} else if (arg == "gas") {
+					selected = config.audio.gas;
+				} else if (arg == "rasputin") {
+					selected = config.audio.rasputin;
+				} else if (arg == "gear") {
+					selected = config.audio.gear;
+				} else if (arg == "sounds") {
+					selected = config.audio.sounds;
+				} else if (arg == "call") {
+					selected = config.audio.call;
+				} else if (arg == "callremix") {
+					selected = config.audio.callremix;
+				} else if (arg == "trailer") {
+					selected = config.audio.trailer;
+				} else if (arg == "uuua") {
+					selected = config.audio.uuua;
+				} else if (arg == "countdown") {
+					selected = config.audio.countdown;
+				} else if (arg == "ymca") {
+					selected = config.audio.ymca;
+				} else if (arg == "distract") {
+					selected = config.audio.distract;
+				} else if (arg == "mii") {
+					selected = config.audio.mii;
+				} else if (arg == "spin") {
+					selected = config.audio.spin;
+				} else if (arg.startsWith("https://www.youtube.com/watch?v")) { //If it's a YT video link, play it
+					if (arg == "https://www.youtube.com/watch?v=zQawXvCd-fs") {
+						msg.channel.send("no, not again");
+						return;
+					}
+					selected = arg;
+					arg = "the video";
+				} else if (arg == "leave") {
+					voiceChannel.leave();
+					msg.channel.send(":( bye");
+					return;
+				}
+				// Special cases: control commands
+				/*
+				else if (arg == "pause") {
+					if (!dispatcher.paused) {
+						msg.channel.send("righty ho, pausing");
+						dispatcher.pause();
+					} else {
+						msg.channel.send("there's nothing playing to pause, dum dum");
+					}
+					return;
+				} else if (arg == "resume") {
+					if (dispatcher.paused) {
+						msg.channel.send("righty ho, resuming");
+						dispatcher.pause();
+					} else {
+						msg.channel.send("there's nothing paused to resume, dum dum");
+					}
+					return;
+				} */
+				else if (arg.startsWith("record")) {
+					if (hasRole(msg.member, config.roles.commander)) {
+						// Create a ReadableStream of s16le PCM audio
+						audio = connection.receiver.createStream(msg.mentions.members.first(), {
+							mode: 'pcm',
+							end: 'manual'
+						});
+						audio.pipe(fs.createWriteStream('user_audio'));
+						msg.channel.send("ok, started");
+					} else {
+						msg.channel.send("No.");
+					}
+				} else if (arg == "stoprecord") {
+					if (hasRole(msg.member, config.roles.commander)) {
+						// Destroy the ReadableStream
+						audio.destroy();
+						msg.channel.send("ok, stopped");
+					} else {
+						msg.channel.send("No.");
+					}
+				} else if (arg == "playrecord") {
+					if (hasRole(msg.member, config.roles.commander)) {
+						dispatcher = connection.play(audio, {
+							type: 'opus'
+						});
+						msg.channel.send("ok, playing");
+					} else {
+						msg.channel.send("No.");
+					}
+				} else {
+					msg.channel.send("umm, what?\nAvailable sounds are: ree, rickroll, thomas, running, gas, rasputin, gear, sounds, call, callremix, trailer, uuua, countdown, ymca, distract, mii, spin - or send a YouTube link!");
+					return;
+				}
+				if (selected) {
+					stream = ytdl(selected, {
+						filter: 'audioonly'
+					});
+					dispatcher = connection.play(stream);
+					loading = msg.channel.send("loading " + arg + ", hold on...\n(if this doesn't change, try again in a minute)");
+					dispatcher.on('start', () => function () {
+						loading.send("ok, playing " + arg);
+					});
+					dispatcher.on('error', () => function () {
+						loading.send("hmm, couldn't play " + arg + ". try again in a minute");
+					});
+				}
+				//});
 				break;
 				// USEFUL COMMANDS
 			case "support":
