@@ -380,6 +380,7 @@ client.on('message', msg => {
 				break;
 			case "suggest":
 				msg.channel.send(":warning: This command is deprecated. Please just send your suggestion directly to the suggestions channel.");
+				break;
 			case "clear":
 				// Clear messages in a channel.
 				num = msg.content.replace(config.prefix + command, '').trim(); // Get the amount of messages to clear.
